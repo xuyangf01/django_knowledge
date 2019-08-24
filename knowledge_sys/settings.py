@@ -158,6 +158,6 @@ HAYSTACK_CONNECTIONS = {
     }
 }
 # 每页显示搜索结果数目为10
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 # 自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
