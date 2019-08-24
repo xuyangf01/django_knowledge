@@ -1,0 +1,81 @@
+{% extends 'base_html/base_index.html' %}
+{% load static %}
+
+{% block title %}
+    搜索关键词
+{% endblock %}
+
+{% block body_content %}
+    <!-- Main navigation -->
+    <div id="content">
+        <div id="content-wrapper" style="height: 900px;">
+
+            <!-- Jumbtron / Slider -->
+            <div class="jumbotron-wrap">
+                <div class="container-fluid">
+                    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="jumbotron">
+                                    <h1 class="text-center">{{ stc_qryset.0.bct_id.bct_name }}</h1>
+                                    <p class="lead text-center">{{ stc_qryset.0.bct_id.bct_describe }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content area -->
+            <main class="container-fluid">
+                <div class="row">
+
+                    <!-- Main content -->
+                    <div class="col-md-8">
+                        <article>
+                            <h3>搜索结果展示：</h3>
+                            <table class="table">
+                                <tr>
+                                    <th>序号</th>
+                                    <th>问题名</th>
+                                    <th>部分内容</th>
+                                </tr>
+                                {% if query %}
+                                    {% for result in page.object_list %}
+                                        <tr>
+                                            <td><h5>{{ forloop.counter }}</h5></td>
+                                            <td><a href="{% url 'show_idea:qct_detail' result.object.t_id %}">
+                                                <h5>{{ result.object.qct_name }}</h5></a></td>
+                                            <td><p>{{ result.object.qct_method | safe | slice:':30' }}......</p></td>
+                                        </tr>
+                                    {% empty %}
+                                        <p>啥也没找到</p>
+                                    {% endfor %}
+
+                                    {% if page.has_previous or page.has_next %}
+                                        <div>
+                                            {% if page.has_previous %}
+                                                <a href="?q={{ query }}&page={{ page.previous_page_number }}">{% endif %}
+                                            « 上一页
+                                            {% if page.has_previous %}</a>{% endif %}
+                                            |
+                                            {% if page.has_next %}
+                                                <a href="?q={{ query }}&page={{ page.next_page_number }}">{% endif %}下一页
+                                            »
+                                            {% if page.has_next %}</a>{% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </table>
+                        </article>
+
+
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+{% endblock %}
+

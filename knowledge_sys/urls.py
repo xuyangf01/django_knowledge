@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'show/', include(("show_idea.urls", 'show_idea'), namespace='show_idea')),
     url(r'ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
+    path(r'search/', include('haystack.urls')),
 
 ]

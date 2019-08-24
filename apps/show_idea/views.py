@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views import View
-from django.http.response import HttpResponse
 from apps.show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 
 
@@ -47,4 +46,4 @@ class QctObjectDetail(View):
         }
         return render(request, 'new_showhtml/q_detail_show.html', context=context)
 
-# class SearchContent(View):
+

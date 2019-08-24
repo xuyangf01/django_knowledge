@@ -52,21 +52,22 @@
                     <div id="mainNavbar">
                         <ul class="flex-column mr-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="{% url 'site_index' %}">Home <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="{% url 'site_index' %}">首页 <span class="sr-only"></span></a>
                             </li>
 
                             {% for bct in btc_obj_qset %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="{% url 'show_idea:sct_list' bct.t_id %}" >{{ bct.bct_name }}</a>
+                                <a class="nav-link dropdown-toggle xuyang" href="{% url 'show_idea:sct_list' bct.t_id %}" >{{ bct.bct_name }}</a>
                             </li>
                             {% endfor %}
                         </ul>
                     </div>
                 </nav>
                 <!-- Sidebar search form -->
-                <form class="form-inline sidebar-search-form my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="text" size="10" placeholder="Search" aria-label="Search">
-                    <button class="btn my-2 my-sm-0" type="submit">Search</button>
+                <form class="form-inline sidebar-search-form my-2 my-lg-0" method="get" action="/search/" target="_self">
+                    <input class="form-control mr-sm-2" type="text" size="10" placeholder="请输入查询关键字" aria-label="Search" name="q">
+                    <br>
+                    <input class="btn my-2 my-sm-0" type="submit" value="搜索查询">
                 </form>
 
             </div>

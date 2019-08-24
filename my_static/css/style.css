@@ -56,10 +56,10 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 body {
   margin: 0;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 400;
-  line-height: 1.9;
-  color: #1b17b8;
+  line-height: 1;
+  color: #dc3545;
   text-align: left;
   background-color: #fff; }
 
@@ -1384,11 +1384,11 @@ pre {
   width: 100%;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
-  line-height: 1.9;
-  color: #495057;
+  line-height: 2.5;
+  color: #045703;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 1px solid #16da11;
   border-radius: 0px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
   .form-control::-ms-expand {
@@ -1688,7 +1688,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
       margin-bottom: 0; }
     .form-inline .form-control {
       display: inline-block;
-      width: auto;
+      width: 100%;
       vertical-align: middle; }
     .form-inline .form-control-plaintext {
       display: inline-block; }
@@ -1715,6 +1715,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
   display: inline-block;
   font-weight: 400;
   text-align: center;
+  color: #007bff;
   white-space: nowrap;
   vertical-align: middle;
   user-select: none;
@@ -1919,6 +1920,9 @@ fieldset[disabled] a.btn {
     background-color: #80B763;
     border-color: #80B763;
     box-shadow: 0 0 0 0.2rem rgba(128, 183, 99, 0.5); }
+.xuyang {
+  font-size: 20px;
+}
 
 .btn-outline-secondary {
   color: #333;
@@ -5282,8 +5286,8 @@ button.bg-dark:hover {
     margin: 0 !important; }
 
   .mt-sm-0,
-  .my-sm-0 {
-    margin-top: 0 !important; }
+  /*.my-sm-0 {*/
+    /*margin-top: 0 !important; }*/
 
   .mr-sm-0,
   .mx-sm-0 {

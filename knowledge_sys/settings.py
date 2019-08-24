@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'apps.show_idea',
     'ckeditor',
     'ckeditor_uploader'
@@ -136,3 +137,15 @@ TIME_FORMAT = 'H:i:s'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'my_static')
 CKEDITOR_UPLOAD_PATH = "images/"
+
+############## 添加搜索引擎 #################################
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+# 每页显示搜索结果数目为10
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+# 自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
