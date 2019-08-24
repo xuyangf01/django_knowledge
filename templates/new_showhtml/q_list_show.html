@@ -1,0 +1,60 @@
+{% extends 'base_html/base_index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ qct_qyset.0.sct_id.sct_name }}|知识库
+{% endblock %}
+
+{% block body_content %}
+    <!-- Main navigation -->
+
+    <div id="content">
+        <div id="content-wrapper" style="height: 900px;">
+
+            <!-- Jumbtron / Slider -->
+            <div class="jumbotron-wrap" >
+                <div class="container-fluid">
+                    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="jumbotron">
+                                    <h1 class="text-center">{{ qct_qyset.0.sct_id.sct_name }}</h1>
+                                    <p class="lead text-center">{{ qct_qyset.0.sct_id.sct_describe }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content area -->
+            <main class="container-fluid">
+                <div class="row">
+
+                    <!-- Main content -->
+                    <div class="col-md-8">
+                        <article>
+                         <h3>问题展示</h3>
+                            <table class="table">
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>问题名</th>
+                                    </tr>
+                                    {% for qtc in qct_qyset %}
+                                    <tr>
+                                        <td><h5>{{ forloop.counter }}</h5></td>
+                                        <td><a href="{% url 'show_idea:qct_detail' qtc.t_id %}"><h5>{{ qtc.qct_name}}</h5></a></td>
+                                    </tr>
+                                    {% endfor %}
+                            </table>
+
+                        </article>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+{% endblock %}
+

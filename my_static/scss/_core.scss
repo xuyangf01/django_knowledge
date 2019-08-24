@@ -1,0 +1,433 @@
+/********************************************************************
+	ZYPOP 
+	FREE WEB TEMPLATES
+********************************************************************/
+
+
+/**
+This file contains the core CSS for this template, built on the Bootstrap framework 
+Set the variable values in _variables.scss 
+**/
+
+
+/** 
+Page structure and elements 
+**/
+.bg-primary {
+    background-color: $primary !important;
+}
+
+body {
+    background: $sidebar-color;
+}
+
+
+main {
+	padding-top: 1em;
+}
+.text-primary {
+    color: $primary !important;
+}
+
+.container-fluid {
+    background-color:  $white
+}
+
+
+#sidebar {
+    width: auto;
+    padding: 0 ($grid-gutter-width / 2);
+    position: auto;
+    overflow: scroll;
+    height: 100%;
+}
+
+#content {
+    margin-left: 0;
+}
+
+a, .page-link {
+    color: $primary, 10%;
+    font-weight: bold;
+    &:hover,
+    &:focus,
+    &:active {
+        color: darken($primary, 10%);
+    }
+}
+
+.page-item.active .page-link {
+    border-color: $primary;
+    background-color: $primary;
+}
+
+fieldset { 
+    margin-bottom: $spacer; 
+    display: block;
+    border-top: 1px solid #ccc;
+}
+fieldset legend { 
+    width: auto;
+    padding-right: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+table th { 
+    background-color: $primary;
+    color: $white;
+	border-color:darken($primary, 15%) !important;
+	border-bottom: 1px solid darken($primary, 15%);
+}
+
+blockquote {
+    display: block;
+    border-left: 5px solid #ccc;
+    padding: 0.5rem;
+	color: #666;
+    margin-bottom: $spacer;
+
+}
+.btn { 
+    font-weight: bold;
+}
+.btn-secondary, .badge-secondary,
+.btn-primary, .badge-primary {
+    color: $white;
+}
+.btn-outline-primary {
+     &:hover,
+    &:focus,
+    &:active {
+        color: $white;
+    }
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6
+{
+    color: #333;
+    font-weight: bold;
+}
+
+h3, .h3 { color: lighten($primary, 10%); }
+
+
+/** 
+Jumbotron / Slider
+**/
+.jumbotron-narrow { 
+    padding: $jumbotron-padding;
+}
+.jumbotron-wrap .container {
+    padding-bottom: 1rem;
+}
+#mainCarousel, .static-slider {
+    border-bottom: 5px solid darken($content-bg-color, 5%);
+    border-radius: $border-radius-lg;
+}
+.jumbotron-wrap .jumbotron { 
+    background: transparent;
+    margin-bottom: 0; 
+}
+.jumbotron-wrap h1, .jumbotron-wrap .h1 {
+    color: $gray-900;
+}
+
+
+
+/**
+Header 
+**/
+header {
+    margin-top: 3.5rem;
+    padding: 0 $grid-gutter-width ($grid-gutter-width / 2);
+}
+header h1 {
+	color: $white;
+	font-size: 2.5rem;
+    text-align: left;
+	line-height: 2.5rem;
+	letter-spacing: -0.1rem;
+    margin-bottom: 0; 
+}
+header h1 span {
+    color: darken($primary, 30%);
+}
+.sidebar-social-icons {
+    margin-top: 20px;
+}
+.sidebar-social-icons a {
+    color: lighten($primary, 80%);
+    &:hover,
+    &:focus,
+    &:active {
+        color: $secondary;
+    }
+}
+
+
+
+
+
+/** 
+Navbar 
+**/
+.navbar-toggler {
+	margin: 0.5rem;
+}
+.navbar, #mainNavbar {
+	padding: 0;
+    width: 100%;
+}
+.navbar ul {
+    padding: 0;
+    list-style: none;
+}
+
+.navbar ul.sub-navbar {
+    padding-left: 20px;
+}
+
+.navbar .active ul.sub-navbar {
+    background-color: $white;
+}
+
+.mobile-header-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+#mainNavbar .nav-link {
+    padding: ($grid-gutter-width / 2) $grid-gutter-width;
+    color: $white;
+     &:hover,
+    &:focus,
+    &:active {
+        text-decoration: underline;
+    }
+}
+#mainNavbar .active .nav-link {
+    color: darken($primary, 20%);
+    background-color: $white;
+}
+.navbar-dark .navbar-brand {
+  	color: $white;  
+    &:hover,
+    &:focus,
+    &:active {
+        color: $white;
+    }
+}
+.navbar-dark .navbar-brand span {
+    color: darken($primary, 30%);
+}
+
+/**
+Footer
+**/
+.footer-container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+footer { 
+    color: darken($content-bg-color, 30%);
+	font-size: 0.9rem;
+
+}
+.footer-lists {
+	background-color: darken($content-bg-color, 5%);
+	padding: $grid-gutter-width;
+	margin-bottom: 1rem;
+    border-top: 1px solid darken($content-bg-color, 15%);
+}
+
+.footer-bottom {
+    color: darken($content-bg-color, 20%);
+}
+
+.footer-bottom  a {
+    color: darken($content-bg-color, 30%);
+    &:hover,
+    &:focus,
+    &:active {
+        color: darken($content-bg-color, 35%);
+        border-bottom-color:  darken($content-bg-color, 35%);
+    }
+}
+
+.footer-lists h4 {
+    color: darken($content-bg-color, 40%);
+}
+
+.social-icons  a {
+    margin-right: 15px;
+    border-bottom: none;
+}
+.footer-lists ul {
+    list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.footer-lists ul li {
+	padding: 0.2rem 0;
+}
+footer p {
+	margin: 0;
+	padding-bottom: 1rem;
+}
+footer p:last-child {
+    padding-bottom: 0;
+}
+footer  a {
+    color: darken($content-bg-color, 25%);
+    border-bottom: 1px solid darken($content-bg-color, 25%);
+    font-weight: normal;
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+        border-bottom-color:  darken($content-bg-color, 60%);
+        color: darken($content-bg-color, 60%);
+    }
+}
+
+
+
+/** 
+Articles
+**/
+article {
+	margin-bottom: 2rem;
+	border-bottom: 1px solid $gray-300;
+	padding-bottom: 2rem;
+}
+
+article h2.article-title {
+	font-size: 2.5rem;
+	margin-bottom: 0;
+    color: $primary;
+	letter-spacing: -1px;
+}
+
+article p.article-meta {
+	color: #ccc;
+    font-size: 0.8rem;
+}
+
+
+/**
+Sidebar
+**/
+.sidebar-box {
+	margin-bottom: 2rem; 
+}
+.sidebar-box-bg {
+	padding: 1rem;
+	background-color: $content-bg-color;
+	border-radius: $border-radius;
+}
+
+
+
+
+/***
+Better nesting of list groups
+***/
+.list-group-item { 
+    border: none;
+    border-bottom: 3px solid $white;
+}
+
+.sidebar-box-bg a, .list-group-item {
+    color: darken($content-bg-color, 60%); 
+    &:hover,
+    &:focus,
+    &:active {
+        color: darken($content-bg-color, 70%); 
+        text-decoration: underline;
+    }
+}
+
+.list-group .list-group .list-group-item {
+	padding-left: $list-group-item-padding-x * 2;
+}
+
+.list-group .list-group .list-group .list-group-item {
+	padding-left: $list-group-item-padding-x * 3;
+}
+
+.list-group .list-group .list-group .list-group .list-group-item {
+	padding-left: $list-group-item-padding-x * 4;
+}
+
+.list-group > .list-group .list-group-item:first-child,
+.list-group > .list-group .list-group-item:last-child {
+	border-radius: 0;
+}
+.list-group > .list-group .list-group-item:last-child {
+	border-bottom: 2px solid $white;
+}
+
+.list-group-root { 
+    background-color: $content-bg-color; 
+    padding: 0rem;
+    border-radius: $border-radius;
+}
+.list-group-item {
+    background-color: $content-bg-color; 
+
+}
+
+.list-group-item.active {
+    background-color: $primary; 
+    border-color: $white;
+    color: $white; 
+    border-radius: $border-radius !important;
+    &:hover,
+    &:focus,
+    &:active {
+        color: $white;
+        text-decoration: underline;
+    }
+}
+
+/** 
+Responsive typography
+https://v4-alpha.getbootstrap.com/content/typography/#responsive-typography
+**/
+html {
+    font-size: 14px;
+}
+.navbar-container {
+    padding: 0;
+}
+@include media-breakpoint-up(xs) {
+  html {
+    font-size: 10px;
+  }
+}
+@include media-breakpoint-up(md) {
+    
+    html {
+        font-size: 12px;
+    }
+
+    #sidebar {
+        width: $sidebar-width;
+        position: fixed;
+        padding: 0;
+    }
+    #content {
+        padding-left: $sidebar-width;
+    }
+    #content #content-wrapper {
+        background-color: $white;
+        padding: 0 ($grid-gutter-width / 2);
+    }
+}
+@include media-breakpoint-up(lg) {
+  html {
+    font-size: 14px;
+  }
+}

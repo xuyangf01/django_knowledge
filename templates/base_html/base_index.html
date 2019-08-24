@@ -1,0 +1,95 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+	<head>
+        <title>
+            {% block title %}
+
+            {% endblock %}
+        </title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Main CSS -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+        <!-- Font Awesome -->
+        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    {% block head_js %}
+
+    {% endblock %}
+    {% block head_css %}
+
+    {% endblock %}
+    </head>
+
+    <body>
+    <div id="sidebar">
+
+        <div class="navbar-expand-md navbar-dark">
+
+            <header class="d-none d-md-block">
+                <a href="{% url 'site_index' %}"><h1><span>知识库</span>系统</h1></a>
+            </header>
+
+
+            <!-- Mobile menu toggle and header -->
+            <div class="mobile-header-controls">
+                <a class="navbar-brand d-md-none d-lg-none d-xl-none" href="#"><span>my</span>website</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#SidebarContent"
+                        aria-controls="SidebarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div id="SidebarContent" class="collapse flex-column navbar-collapse">
+
+
+                <!-- Main navigation items -->
+                <nav class="navbar navbar-dark">
+                    <div id="mainNavbar">
+                        <ul class="flex-column mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'site_index' %}">Home <span class="sr-only">(current)</span></a>
+                            </li>
+
+                            {% for bct in btc_obj_qset %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="{% url 'show_idea:sct_list' bct.t_id %}" >{{ bct.bct_name }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+                <!-- Sidebar search form -->
+                <form class="form-inline sidebar-search-form my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" size="10" placeholder="Search" aria-label="Search">
+                    <button class="btn my-2 my-sm-0" type="submit">Search</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+        {% block body_content %}
+
+        {% endblock %}
+
+
+        {% block foot_js %}
+
+        {% endblock %}
+
+        {% block foot_css %}
+
+        {% endblock %}
+        <!-- Bootcamp JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="{% static 'js/popper.min.js' %}" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    </body>
+</html>

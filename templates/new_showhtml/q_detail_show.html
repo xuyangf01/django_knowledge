@@ -1,0 +1,47 @@
+{% extends 'base_html/base_index.html' %}
+{% load static %}
+
+{% block title %}
+问题详情|知识库
+{% endblock %}
+
+{% block body_content %}
+
+    <!-- Main navigation -->
+    <div id="content">
+        <div id="content-wrapper" style="height: 900px;">
+
+            <!-- Jumbtron / Slider -->
+            <div class="jumbotron-wrap" >
+                <div class="container-fluid">
+                    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="jumbotron">
+                                    <h1 class="text-center">{{ qct_obj.qct_name }}</h1>
+{#                                    <p class="lead text-center">{{ qct_obj.qct_method }}</p>#}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main content area -->
+            <main class="container-fluid">
+                <div class="row">
+
+                    <!-- Main content -->
+                    <div class="col-md-8">
+                        <article>
+                            <p class="" style="color: #0c5460">{{ qct_obj.qct_method | safe}}</p>
+                        </article>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+{% endblock %}
+
