@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 from django.conf import settings
-from apps.show_idea.views import Index, page_not_found
+from show_idea.views import Index, page_not_found
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +26,6 @@ urlpatterns = [
     re_path(r'ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r'search/', include('haystack.urls')),
-    # re_path(r'search/?', SearchResult.as_view(), name='haystack_search'),
 ]
 
 handler404 = page_not_found

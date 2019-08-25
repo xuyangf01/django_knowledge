@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'haystack',
-    'apps.show_idea',
+    'show_idea.apps.ShowIdeaConfig',
     'ckeditor',
     'ckeditor_uploader',
 

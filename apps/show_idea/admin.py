@@ -1,9 +1,7 @@
 from django.contrib import admin, messages
-from apps.show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
+from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 
 admin.site.disable_action('delete_selected')
-admin.site.site_header = '亚博知识库系统'
-admin.site.site_title = '亚博知识库'
 
 
 class BaseAdmin(admin.ModelAdmin):
@@ -58,7 +56,7 @@ class BigClassThemeAdmin(BaseAdmin):
 @admin.register(SubClassTheme)
 class SubClassThemeAdmin(BaseAdmin):
     list_display = (
-       'sct_name', 'creator', 'updator', 'bct_id', "is_show", 'last_edit_timestamp', 'create_timestamp')
+        'sct_name', 'creator', 'updator', 'bct_id', "is_show", 'last_edit_timestamp', 'create_timestamp')
     list_filter = ("is_show", 'creator', 'updator', 'bct_id')
     search_fields = ("sct_name", "creator", "sct_describe")
     fields = ['bct_id', 'sct_name', "sct_describe", 'is_show']
@@ -71,3 +69,7 @@ class QuestionCalssThemeAdmin(BaseAdmin):
     list_filter = ("is_show", 'creator', 'updator', 'bct_id', 'sct_id')
     search_fields = ("qct_name", "creator", "qct_method")
     fields = ['sct_id', 'qct_name', "qct_method", 'is_show']
+
+
+admin.site.site_header = '亚博知识库系统'
+admin.site.site_title = '亚博知识库'

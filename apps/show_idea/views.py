@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from apps.show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
+from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 
 
 def page_not_found(request, **kwargs):

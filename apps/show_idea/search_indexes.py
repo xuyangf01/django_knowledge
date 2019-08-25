@@ -1,6 +1,6 @@
 from haystack import indexes
 # 引入项目下的model（也就是将其作为检索关键词的models）
-from apps.show_idea.models import QuestionCalssTheme
+from show_idea.models import QuestionCalssTheme
 
 
 # model名 + Index作为类名
