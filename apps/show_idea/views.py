@@ -3,6 +3,10 @@ from django.views import View
 from apps.show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 
 
+def page_not_found(request, **kwargs):
+    return render(request, 'base_html/404.html')
+
+
 class Index(View):
     def get(self, request):
         btc_obj_qset = BigClassTheme.objects.filter(is_show=True)
@@ -45,5 +49,3 @@ class QctObjectDetail(View):
             "qct_obj": qct_obj
         }
         return render(request, 'new_showhtml/q_detail_show.html', context=context)
-
-
