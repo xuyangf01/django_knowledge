@@ -24,7 +24,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = '23rnma#tz7s5-2tpw5(sp!*6ceqnuurfa18u()*x)xu)w=*soa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,7 +43,8 @@ INSTALLED_APPS = [
     'haystack',
     'apps.show_idea',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+
 
 ]
 
@@ -161,3 +164,5 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 50
 # 自动生成索引
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+############## 富文本编辑器 ################################

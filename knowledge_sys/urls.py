@@ -14,18 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls import url
+from django.urls import path, include, re_path
 from django.views.static import serve
 from django.conf import settings
-from apps.show_idea.views import Index
+from apps.show_idea.views import Index, page_not_found
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', Index.as_view(), name="site_index"),
-    url(r'show/', include(("show_idea.urls", 'show_idea'), namespace='show_idea')),
-    url(r'ckeditor/', include('ckeditor_uploader.urls')),
-    url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
-    path(r'search/', include('haystack.urls')),
-
+    re_path(r'^$', Index.as_view(), name="site_index"),
+    re_path(r'show/', include(("show_idea.urls", 'show_idea'), namespace='show_idea')),
+    re_path(r'ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
+    re_path(r'search/', include('haystack.urls')),
 ]
+
+handler404 = page_not_found
