@@ -26,6 +26,7 @@ urlpatterns = [
     re_path(r'ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r'search/', include('haystack.urls')),
+    # re_path(r'search/?', SearchResult.as_view(), name='haystack_search'),
 ]
 
 handler404 = page_not_found

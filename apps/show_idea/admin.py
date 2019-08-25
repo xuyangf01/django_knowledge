@@ -22,7 +22,22 @@ class BaseAdmin(admin.ModelAdmin):
 
     # 重写admin保存方法
     def save_model(self, request, obj, form, change):
-        if isinstance(obj, QuestionCalssTheme) and not hasattr(obj, "bct_id"):
+        # # 当对象是大类主题且设置隐藏时     2--隐藏
+        if isinstance(obj, BigClassTheme):
+            sub_qry = SubClassTheme.objects.filter(bct_id=obj.t_id)
+            for sub_obj in sub_qry:
+                sub_obj.is_show = obj.is_show
+                sub_obj.save()
+            que_qry = QuestionCalssTheme.objects.filter(bct_id=obj.t_id)
+            for que_obj in que_qry:
+                que_obj.is_show = obj.is_show
+                que_obj.save()
+        elif isinstance(obj, SubClassTheme):
+            que_qry = QuestionCalssTheme.objects.filter(sct_id=obj.t_id)
+            for que_obj in que_qry:
+                que_obj.is_show = obj.is_show
+                que_obj.save()
+        elif isinstance(obj, QuestionCalssTheme) and not hasattr(obj, "bct_id"):
             obj.bct_id = SubClassTheme.objects.get(t_id=obj.sct_id_id).bct_id
         if not obj.creator:
             obj.creator = request.user.username

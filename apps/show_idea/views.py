@@ -9,8 +9,10 @@ def page_not_found(request, **kwargs):
 
 class Index(View):
     def get(self, request):
-        btc_obj_qset = BigClassTheme.objects.filter(is_show=True)
-        stc_qryset = SubClassTheme.objects.filter(is_show=True, bct_id=btc_obj_qset[0].pk)
+        btc_obj_qset = BigClassTheme.objects.filter(is_show=1)
+        if not len(btc_obj_qset):
+            return render(request, 'base_html/首页无数据.html')
+        stc_qryset = SubClassTheme.objects.filter(is_show=1, bct_id=btc_obj_qset[0].pk)
         context = {
             "btc_obj_qset": btc_obj_qset,
             "stc_qryset": stc_qryset,
@@ -20,8 +22,12 @@ class Index(View):
 
 class SctListShow(View):
     def get(self, request, t_id):
-        btc_obj_qset = BigClassTheme.objects.filter(is_show=True)
-        stc_qryset = SubClassTheme.objects.filter(is_show=True, bct_id=t_id)
+        btc_obj_qset = BigClassTheme.objects.filter(is_show=1)
+        if not len(btc_obj_qset):
+            return render(request, 'base_html/首页无数据.html')
+        stc_qryset = SubClassTheme.objects.filter(is_show=1, bct_id=t_id)
+        if not len(stc_qryset):
+            return render(request, 'base_html/404.html')
         context = {
             "btc_obj_qset": btc_obj_qset,
             "stc_qryset": stc_qryset,
@@ -31,8 +37,12 @@ class SctListShow(View):
 
 class QctListShow(View):
     def get(self, request, t_id):
-        btc_obj_qset = BigClassTheme.objects.filter(is_show=True)
-        qct_qyset = QuestionCalssTheme.objects.filter(is_show=True, sct_id_id=t_id)
+        btc_obj_qset = BigClassTheme.objects.filter(is_show=1)
+        if not len(btc_obj_qset):
+            return render(request, 'base_html/首页无数据.html')
+        qct_qyset = QuestionCalssTheme.objects.filter(is_show=1, sct_id_id=t_id)
+        if not len(qct_qyset):
+            return render(request, 'base_html/404.html')
         context = {
             "btc_obj_qset": btc_obj_qset,
             "qct_qyset": qct_qyset
@@ -42,10 +52,16 @@ class QctListShow(View):
 
 class QctObjectDetail(View):
     def get(self, request, t_id):
-        btc_obj_qset = BigClassTheme.objects.filter(is_show=True)
-        qct_obj = QuestionCalssTheme.objects.get(pk=t_id, is_show=True)
+        btc_obj_qset = BigClassTheme.objects.filter(is_show=1)
+        if not len(btc_obj_qset):
+            return render(request, 'base_html/首页无数据.html')
+        qct_obj = QuestionCalssTheme.objects.filter(pk=t_id, is_show=1)
+        if not len(qct_obj):
+            return render(request, 'base_html/404.html')
         context = {
             "btc_obj_qset": btc_obj_qset,
-            "qct_obj": qct_obj
+            "qct_obj": qct_obj[0]
         }
         return render(request, 'new_showhtml/q_detail_show.html', context=context)
+
+

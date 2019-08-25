@@ -24,9 +24,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = '23rnma#tz7s5-2tpw5(sp!*6ceqnuurfa18u()*x)xu)w=*soa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
+# DEBUG = False
+# TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
