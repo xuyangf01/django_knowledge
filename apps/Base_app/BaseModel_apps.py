@@ -13,6 +13,22 @@ class BaseModelApps(models.Model):
     )
     is_show = models.SmallIntegerField("页面展示", choices=show_choice, default=1)
 
+    popular_choice = (
+        (1, '一般问题'),
+        (2, '热门问题'),
+    )
+    is_popular = models.SmallIntegerField("是否热门问题", choices=popular_choice, default=1)
+
+    priority_choice = (
+        (1, '1级优先（最高）'),
+        (2, '2级优先'),
+        (3, '3级优先（一般）'),
+        (4, '4级优先'),
+        (5, '5级优先（最低）'),
+    )
+
+    is_priority = models.SmallIntegerField("排序优先级", choices=priority_choice, default=3)
+
     class Meta:
         abstract = True
 

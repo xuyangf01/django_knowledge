@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700);
+/*@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700);*/
 /*!
  * Bootstrap v4.0.0-beta.3 (https://getbootstrap.com)
  * Copyright 2011-2017 The Bootstrap Authors
@@ -48,8 +48,8 @@ html {
   -ms-overflow-style: scrollbar;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
-@-ms-viewport {
-  width: device-width; }
+/*@-ms-viewport {*/
+  /*width: device-width; }*/
 article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
 
@@ -491,7 +491,8 @@ pre {
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
-  margin-left: -15px; }
+  margin-left: -15px;
+}
 
 .no-gutters {
   margin-right: 0;
@@ -1184,7 +1185,15 @@ pre {
   .table td {
     padding: 0.75rem;
     vertical-align: top;
-    border-top: 1px solid #dee2e6; }
+    border-bottom: 1px solid #dee2e6;
+    width: 100px;
+  }
+  .table th:first-child{
+    width: 20%;
+  }
+  .table td:first-child {
+    width: 20%;
+  }
   .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #dee2e6; }
@@ -6367,6 +6376,25 @@ a.text-secondary:focus, a.text-secondary:hover {
 a.text-success:focus, a.text-success:hover {
   color: #1e7e34 !important; }
 
+#content_xuyang {
+  padding-top: 30px;
+  margin-bottom: 30px;
+}
+#content_xuyang>div {
+  font-size: 20px;
+  color: #395829;
+  padding-bottom: 20px;
+}
+
+#content_xuyang>p {
+  font-size: 14px;
+  color: #395829;
+}
+
+#content_xuyang>p>span {
+  margin-left: 300px;
+}
+
 .text-info {
   color: #17a2b8 !important; }
 
@@ -6504,7 +6532,7 @@ main {
   margin-left: 0; }
 
 a, .page-link {
-  color: #80B763, 10%;
+  color: #80B763;
   font-weight: bold; }
   a:hover, a:focus, a:active, .page-link:hover, .page-link:focus, .page-link:active {
     color: #669e49; }
@@ -6706,7 +6734,7 @@ Articles
 **/
 article {
   margin-bottom: 2rem;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 3px solid #669e49;
   padding-bottom: 2rem; }
 
 article h2.article-title {

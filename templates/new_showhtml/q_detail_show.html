@@ -11,40 +11,43 @@
     <div id="content">
         <div id="content-wrapper" style="height: 900px;">
 
-            <!-- Jumbtron / Slider -->
-            <div class="jumbotron-wrap" >
-                <div class="container-fluid">
-                    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <div class="jumbotron">
-                                    <h1 class="text-center">{{ qct_obj.qct_name }}</h1>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
             <!-- Main content area -->
             <main class="container-fluid">
-                <div class="alert alert-light" role="alert">
-                    <p>问题词条创建人：{{ qct_obj.creator }}---------------<span>创建时间：{{ qct_obj.create_timestamp }}</span></p>
-                    <p>最近一次修改人：{{ qct_obj.updator }}---------------<span>修改时间：{{ qct_obj.last_edit_timestamp }}</span></p>
+                <div class="row">
+                    <div class="col-md-8">
+                        <article id="content_xuyang">
+                            <div>大类主题：<a href="{% url 'show_idea:sct_list' qct_obj.bct_id_id %}">{{ qct_obj.bct_id.bct_name }}</a></div>
+                            <div>子类主题：<a href="{% url 'show_idea:qct_list' qct_obj.sct_id_id %}">{{ qct_obj.sct_id.sct_name }}</a></div>
+                            <div>问题名：<span style="color: red; padding-top: 10px;">{{ qct_obj.qct_name }}</span></div>
+                            <p>创建人：{{ qct_obj.creator }}<span>创建时间：{{ qct_obj.create_timestamp }}</span></p>
+                            <p>修改人：{{ qct_obj.updator }}<span>修改时间：{{ qct_obj.last_edit_timestamp }}</span></p>
+                        </article>
+                    </div>
                 </div>
+                <div class="row">
+
+                    <!-- Main content -->
+                    <div class="col-md-8">
+                        <article>
+                            <h4 style="color: #5b8d41">正文内容：</h4>
+                            <br>
+                            <div><p>{{ qct_obj.qct_method | safe}}</p></div>
+                        </article>
+                    </div>
+                </div>
+
                 <div class="row">
                     <!-- Main content -->
                     <div class="col-md-8">
 
                         <article>
-                            <h4 style="color: #5b8d41">正文内容：</h4>
+                            <h4 style="color: #5b8d41">内部评语指导：</h4>
                             <br>
-                            <div><p class="" style="color: #0c5460">{{ qct_obj.qct_method | safe}}</p></div>
+                            <div><p>{{ qct_obj.qct_comment | safe}}</p></div>
                         </article>
                     </div>
-
                 </div>
+
             </main>
 
         </div>

@@ -18,7 +18,7 @@ class BigClassTheme(BaseModelApps):
 
 # 子类主题
 class SubClassTheme(BaseModelApps):
-    bct_id = models.ForeignKey(to="BigClassTheme", on_delete=models.DO_NOTHING, to_field="t_id",
+    bct_id = models.ForeignKey(to="BigClassTheme", on_delete=models.CASCADE, to_field="t_id",
                                verbose_name="对应的大类主题ID")
     sct_name = models.CharField("子类主题名", max_length=15, null=False)
     sct_describe = models.TextField("子主题描述", max_length=500, default="此子类主题暂无描述")
@@ -33,12 +33,13 @@ class SubClassTheme(BaseModelApps):
 
 # 咨询问题
 class QuestionCalssTheme(BaseModelApps):
-    bct_id = models.ForeignKey(to="BigClassTheme", on_delete=models.DO_NOTHING, to_field="t_id",
+    bct_id = models.ForeignKey(to="BigClassTheme", on_delete=models.CASCADE, to_field="t_id",
                                verbose_name="对应的大类主题ID")
-    sct_id = models.ForeignKey(to="SubClassTheme", on_delete=models.DO_NOTHING, to_field="t_id",
+    sct_id = models.ForeignKey(to="SubClassTheme", on_delete=models.CASCADE, to_field="t_id",
                                verbose_name="对应的子类主题ID")
     qct_name = models.CharField("求助问题", max_length=15, null=False)
-    qct_method = RichTextUploadingField(null=True, blank=True)
+    qct_method = RichTextUploadingField(null=True, blank=True, verbose_name="内容描述", default="暂无内容")
+    qct_comment = RichTextUploadingField(verbose_name="内部评语指导", max_length=1024, null=True, blank=True, default="暂无内容")
 
     def __str__(self):
         return "问题名：{}".format(self.qct_name)

@@ -33,7 +33,7 @@
 
                     <!-- Main content -->
                     <div class="col-md-8">
-                        <article>
+{#                        <article>#}
                             <h3>搜索结果展示：</h3>
                             <table class="table">
                                 <tr>
@@ -44,9 +44,9 @@
                                 {% if query %}
                                     {% for result in page.object_list %}
                                         <tr>
-                                            <td><h5>{{ forloop.counter }}</h5></td>
+                                            <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
                                             <td><a href="{% url 'show_idea:qct_detail' result.object.t_id %}">
-                                                <h5>{{ result.object.qct_name }}</h5></a></td>
+                                                <span style="color: red;font-size: 18px;">{{ result.object.qct_name }}</span></a></td>
                                             <td><p>{{ result.object.qct_method | safe | slice:':30' }}......</p></td>
                                         </tr>
                                     {% empty %}
@@ -68,7 +68,7 @@
                                     {% endif %}
                                 {% endif %}
                             </table>
-                        </article>
+{#                        </article>#}
 
 
                     </div>

@@ -11,30 +11,17 @@
     <div id="content">
         <div id="content-wrapper" style="height: 900px;">
 
-            <!-- Jumbtron / Slider -->
-            <div class="jumbotron-wrap" >
-                <div class="container-fluid">
-                    <div id="mainCarousel" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <div class="jumbotron">
-                                    <h1 class="text-center">{{ qct_qyset.0.sct_id.sct_name }}</h1>
-                                    <p class="lead text-center">{{ qct_qyset.0.sct_id.sct_describe }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
             <!-- Main content area -->
             <main class="container-fluid">
-                <div class="row">
+                <div id="content_xuyang">
+                    <div>大类主题：<a href="{% url 'show_idea:sct_list' qct_qyset.0.bct_id_id %}">{{ qct_qyset.0.bct_id.bct_name }}</a></div>
+                    <div>子类主题：<a href="{% url 'show_idea:qct_list' qct_qyset.0.sct_id_id %}">{{ qct_qyset.0.sct_id.sct_name }}</a></div>
+                </div>
 
+                <div class="row">
                     <!-- Main content -->
                     <div class="col-md-8">
-                        <article>
+{#                        <article>#}
                          <h3>问题展示</h3>
                             <table class="table">
                                     <tr>
@@ -43,13 +30,13 @@
                                     </tr>
                                     {% for qtc in qct_qyset %}
                                     <tr>
-                                        <td><h5>{{ forloop.counter }}</h5></td>
-                                        <td><a href="{% url 'show_idea:qct_detail' qtc.t_id %}"><h5>{{ qtc.qct_name}}</h5></a></td>
+                                        <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
+                                        <td><a href="{% url 'show_idea:qct_detail' qtc.t_id %}"><h5 style="color: red">{{ qtc.qct_name}}</h5></a></td>
                                     </tr>
                                     {% endfor %}
                             </table>
 
-                        </article>
+{#                        </article>#}
                     </div>
                 </div>
             </main>
