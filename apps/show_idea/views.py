@@ -12,7 +12,6 @@ class Index(View):
         btc_obj_qset = BigClassTheme.objects.filter(is_show=1).order_by('is_priority')
         if not len(btc_obj_qset):
             return render(request, 'base_html/首页无数据.html')
-        # stc_qryset = SubClassTheme.objects.filter(is_show=1, bct_id=btc_obj_qset[0].pk).order_by('is_priority')
         qct_qyset = QuestionCalssTheme.objects.filter(is_show=1, is_popular=2).order_by('is_priority')
         context = {
             "btc_obj_qset": btc_obj_qset,
