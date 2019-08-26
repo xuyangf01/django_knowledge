@@ -1,3 +1,4 @@
 .idea
 db.sqlite3
 whoosh_index
+my_static/images
