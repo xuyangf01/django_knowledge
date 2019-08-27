@@ -56,10 +56,10 @@ class BaseAdmin(admin.ModelAdmin):
 @admin.register(BigClassTheme)
 class BigClassThemeAdmin(BaseAdmin):
     list_display = (
-        'bct_name', 'creator', 'updator', "is_show", 'is_popular', 'is_priority', 'last_edit_timestamp',
+        'bct_name', 'creator', 'updator', "is_show", 'is_priority', 'last_edit_timestamp',
         'create_timestamp')
     list_filter = ("is_show", 'creator', 'updator')
-    list_editable = ["is_show", 'is_popular', 'is_priority']
+    list_editable = ["is_show", 'is_priority']
 
     search_fields = ("bct_name", "creator", "bct_describe")
     fields = ['bct_name', "bct_describe", 'is_show', "is_popular", 'is_priority']
@@ -68,10 +68,10 @@ class BigClassThemeAdmin(BaseAdmin):
 @admin.register(SubClassTheme)
 class SubClassThemeAdmin(BaseAdmin):
     list_display = (
-        'sct_name', 'creator', 'updator', 'bct_id', "is_show", 'is_popular', 'is_priority', 'last_edit_timestamp',
+        'sct_name', 'creator', 'updator', 'bct_id', "is_show", 'is_priority', 'last_edit_timestamp',
         'create_timestamp')
     list_filter = ("is_show", 'creator', 'updator', 'bct_id')
-    list_editable = ['bct_id', "is_show", 'is_popular', 'is_priority']
+    list_editable = ['bct_id', "is_show", 'is_priority']
 
     search_fields = ("sct_name", "creator", "sct_describe")
     fields = ['bct_id', 'sct_name', "sct_describe", 'is_show', "is_popular", 'is_priority']
@@ -80,7 +80,7 @@ class SubClassThemeAdmin(BaseAdmin):
 @admin.register(QuestionCalssTheme)
 class QuestionCalssThemeAdmin(BaseAdmin):
     list_display = (
-        'qct_name', 'creator', 'updator', 'bct_id', 'sct_id', "is_show", 'is_effective','is_popular', 'is_priority',
+        'qct_name', 'creator', 'updator', 'bct_id', 'sct_id', "is_show", 'is_effective', 'is_popular', 'is_priority',
         'last_edit_timestamp', 'create_timestamp')
     list_filter = ("is_show", 'creator', 'updator', 'bct_id', 'sct_id')
     list_editable = ['sct_id', "is_show", 'is_popular', 'is_priority', 'is_effective']

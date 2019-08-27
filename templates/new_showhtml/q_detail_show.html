@@ -9,13 +9,13 @@
 
     <!-- Main navigation -->
     <div id="content">
-        <div id="content-wrapper" style="height: 900px;">
+        <div id="content-wrapper">
 
             <!-- Main content area -->
             <main class="container-fluid">
                 <div class="row">
                     <div class="col-md-8">
-                        <div id="content_xuyang">
+                        <div id="content_xuyang" style="border-bottom: 3px solid #74c7ece3;">
                             <div>主问题目录：<a href="{% url 'show_idea:sct_list' qct_obj.bct_id_id %}">{{ qct_obj.bct_id.bct_name }}</a></div>
                             <div>子问题目录：<a href="{% url 'show_idea:qct_list' qct_obj.sct_id_id %}">{{ qct_obj.sct_id.sct_name }}</a></div>
                             <div>问题名：<span style="color: red; padding-top: 10px;font-weight:bold;">{{ qct_obj.qct_name }}</span></div>

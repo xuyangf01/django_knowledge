@@ -6384,6 +6384,10 @@ a.text-success:focus, a.text-success:hover {
   padding-top: 30px;
   margin-bottom: 30px;
   color: black;
+  background-image: url("../images/yobo_meitu_1.jpg");
+  background-repeat:no-repeat;
+  background-position: right;
+
 }
 #content_xuyang>div {
   font-size: 20px;
@@ -6743,7 +6747,7 @@ Articles
 **/
 article {
   margin-bottom: 2rem;
-  border-bottom: 3px solid #669e49;
+  border-bottom: 3px solid #74c7ece3;
   padding-bottom: 2rem; }
 
 article h2.article-title {
@@ -6838,10 +6842,14 @@ html {
 
   #content {
     padding-left: 270px; }
+  #content-wrapper {
+    height: auto;
+  }
 
   #content #content-wrapper {
     background-color: #fff;
-    padding: 0 15px; } }
+    padding: 0 15px;
+  } }
 @media (min-width: 992px) {
   html {
     font-size: 14px; } }
