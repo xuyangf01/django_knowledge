@@ -6,6 +6,12 @@
     <title>错误页面</title>
     <link rel="shortcut icon" href="{%static "images/yabo.ico" %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/404.css' %}"/>
+    <script>
+    function goBack()
+    {
+        window.history.back()
+    }
+</script>
 </head>
 
 <body style="background:#0186a7;">
@@ -23,14 +29,9 @@
                     <p class="error_p_con">※ 感谢您的支持,请您耐心等待!</p>
                 </div>
 
-                <p class="error_new_right_btn pr">
-                    <a href="{% url 'site_index' %}" class="type-2 type-3">
-                        <i> 返回首页</i>
-                        <i> 返回首页 </i>
-                        <i> 返回首页 </i>
-                        <i> 返回首页 </i>
-                    </a>
-                </p>
+                <div class="error_new_right_btn pr">
+                    <input type="button" value="返回之前的页面" onclick="goBack()" class="type-2 type-3">
+                </div>
             </div>
         </div>
     </div>
