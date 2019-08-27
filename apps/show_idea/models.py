@@ -39,7 +39,7 @@ class QuestionCalssTheme(BaseModelApps):
                                verbose_name="对应的子类主题ID")
     qct_name = models.CharField("求助问题", max_length=128, null=False)
     qct_method = RichTextUploadingField(null=True, blank=True, verbose_name="内容描述", default="暂无内容")
-    qct_comment = RichTextUploadingField(verbose_name="内部评语指导", max_length=1024, null=True, blank=True, default="暂无内容")
+    qct_comment = RichTextUploadingField(verbose_name="内部评语指导", null=True, blank=True, default="暂无内容")
 
     def __str__(self):
         return "问题名：{}".format(self.qct_name)
