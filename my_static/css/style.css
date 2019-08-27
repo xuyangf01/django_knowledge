@@ -63,6 +63,10 @@ body {
   text-align: left;
   background-color: #fff; }
 
+.art_xuyang {
+  line-height: 1.2;
+}
+
 [tabindex="-1"]:focus {
   outline: 0 !important; }
 
@@ -6391,8 +6395,8 @@ a.text-success:focus, a.text-success:hover {
   color: #395829;
 }
 
-#content_xuyang>p>span {
-  margin-left: 300px;
+#content_xuyang>p>span:first-child {
+  margin-right: 300px;
 }
 
 .text-info {
@@ -6510,7 +6514,7 @@ Page structure and elements
   background-color: #80B763 !important; }
 
 body {
-  background: #80B763; }
+  background: #12a6c5; }
 
 main {
   padding-top: 1em; }
@@ -6553,10 +6557,10 @@ fieldset legend {
   font-weight: bold; }
 
 table th {
-  background-color: #80B763;
+  background-color: #12a6c5;
   color: #fff;
-  border-color: #5b8d41 !important;
-  border-bottom: 1px solid #5b8d41; }
+  border-color: #12a6c5 !important;
+  border-bottom: 1px solid #12a6c5; }
 
 blockquote {
   display: block;
@@ -6618,7 +6622,7 @@ header h1 {
   margin-bottom: 0; }
 
 header h1 span {
-  color: #395829; }
+  color: #fff; }
 
 .sidebar-social-icons {
   margin-top: 20px; }
@@ -6819,7 +6823,8 @@ html {
 
 @media (min-width: 768px) {
   html {
-    font-size: 12px; }
+    font-size: 12px;
+  }
 
   #sidebar {
     width: 270px;
