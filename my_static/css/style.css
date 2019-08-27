@@ -6383,16 +6383,21 @@ a.text-success:focus, a.text-success:hover {
 #content_xuyang {
   padding-top: 30px;
   margin-bottom: 30px;
+  color: black;
 }
 #content_xuyang>div {
   font-size: 20px;
-  color: #395829;
+  /*color: #395829;*/
   padding-bottom: 20px;
+}
+
+#content_xuyang>div>a {
+  color: black;
 }
 
 #content_xuyang>p {
   font-size: 14px;
-  color: #395829;
+  /*color: #395829;*/
 }
 
 #content_xuyang>p>span:first-child {
@@ -6584,7 +6589,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-weight: bold; }
 
 h3, .h3 {
-  color: #9cc786; }
+  color: black; }
 
 /** 
 Jumbotron / Slider

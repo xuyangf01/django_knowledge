@@ -40,6 +40,11 @@ class QuestionCalssTheme(BaseModelApps):
     qct_name = models.CharField("求助问题", max_length=128, null=False)
     qct_method = RichTextUploadingField(null=True, blank=True, verbose_name="内容描述", default="暂无内容")
     qct_comment = RichTextUploadingField(verbose_name="内部评语指导", null=True, blank=True, default="暂无内容")
+    effective_choice = (
+        (1, "生效中"),
+        (2, "已失效")
+    )
+    is_effective = models.SmallIntegerField(verbose_name="当前状态", choices=effective_choice, default=1)
 
     def __str__(self):
         return "问题名：{}".format(self.qct_name)

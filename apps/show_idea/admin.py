@@ -80,10 +80,10 @@ class SubClassThemeAdmin(BaseAdmin):
 @admin.register(QuestionCalssTheme)
 class QuestionCalssThemeAdmin(BaseAdmin):
     list_display = (
-        'qct_name', 'creator', 'updator', 'bct_id', 'sct_id', "is_show", 'is_popular', 'is_priority',
+        'qct_name', 'creator', 'updator', 'bct_id', 'sct_id', "is_show", 'is_effective','is_popular', 'is_priority',
         'last_edit_timestamp', 'create_timestamp')
     list_filter = ("is_show", 'creator', 'updator', 'bct_id', 'sct_id')
-    list_editable = ['sct_id', "is_show", 'is_popular', 'is_priority']
+    list_editable = ['sct_id', "is_show", 'is_popular', 'is_priority', 'is_effective']
 
     search_fields = ("qct_name", "creator", "qct_method")
     fields = ['sct_id', 'qct_name', "qct_method", 'is_show', "is_popular", 'is_priority', 'qct_comment']

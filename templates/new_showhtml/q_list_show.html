@@ -14,8 +14,8 @@
             <!-- Main content area -->
             <main class="container-fluid">
                 <div id="content_xuyang">
-                    <div>大类主题：<a href="{% url 'show_idea:sct_list' qct_qyset.0.bct_id_id %}">{{ qct_qyset.0.bct_id.bct_name }}</a></div>
-                    <div>子类主题：<a href="{% url 'show_idea:qct_list' qct_qyset.0.sct_id_id %}">{{ qct_qyset.0.sct_id.sct_name }}</a></div>
+                    <div>主问题目录：<a href="{% url 'show_idea:sct_list' qct_qyset.0.bct_id_id %}">{{ qct_qyset.0.bct_id.bct_name }}</a></div>
+                    <div>子问题目录：<a href="{% url 'show_idea:qct_list' qct_qyset.0.sct_id_id %}">{{ qct_qyset.0.sct_id.sct_name }}</a></div>
                 </div>
 
                 <div class="row">
