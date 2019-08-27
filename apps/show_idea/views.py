@@ -55,13 +55,21 @@ class QctObjectDetail(View):
         btc_obj_qset = BigClassTheme.objects.filter(is_show=1).order_by('is_priority')
         if not len(btc_obj_qset):
             return render(request, 'base_html/首页无数据.html')
-        qct_obj = QuestionCalssTheme.objects.filter(pk=t_id, is_show=1)
-        if not len(qct_obj):
+        qct_obj_qury = QuestionCalssTheme.objects.filter(pk=t_id, is_show=1)
+        # 没有获取到对象
+        if not len(qct_obj_qury):
             return render(request, 'base_html/404.html')
         context = {
             "btc_obj_qset": btc_obj_qset,
-            "qct_obj": qct_obj[0]
+            "qct_obj": qct_obj_qury[0]
         }
-        return render(request, 'new_showhtml/q_detail_show.html', context=context)
+        resp = render(request, 'new_showhtml/q_detail_show.html', context=context)
+        # 设置cookie，第一次颁发一个reading状态
+        if request.COOKIES.get("question_{}".format(t_id)) != "reading":
+            qct_obj_qury[0].visit_count += 1
+            qct_obj_qury[0].save()
+            # 设置失效时间60秒
+            resp.set_cookie("question_{}".format(t_id), 'reading', max_age=600)
+        return resp
 
 

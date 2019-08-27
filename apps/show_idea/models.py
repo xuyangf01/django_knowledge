@@ -45,6 +45,7 @@ class QuestionCalssTheme(BaseModelApps):
         (2, "已失效")
     )
     is_effective = models.SmallIntegerField(verbose_name="当前状态", choices=effective_choice, default=1)
+    visit_count = models.BigIntegerField(verbose_name="文章访问量", default=0)
 
     def __str__(self):
         return "问题名：{}".format(self.qct_name)

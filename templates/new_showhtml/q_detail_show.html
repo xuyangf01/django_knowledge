@@ -19,16 +19,26 @@
                             <div>主问题目录：<a href="{% url 'show_idea:sct_list' qct_obj.bct_id_id %}">{{ qct_obj.bct_id.bct_name }}</a></div>
                             <div>子问题目录：<a href="{% url 'show_idea:qct_list' qct_obj.sct_id_id %}">{{ qct_obj.sct_id.sct_name }}</a></div>
                             <div>问题名：<span style="color: red; padding-top: 10px;font-weight:bold;">{{ qct_obj.qct_name }}</span></div>
-                            <p><span>创建人：{{ qct_obj.creator }}</span><span>创建时间：{{ qct_obj.create_timestamp }}</span></p>
-                            <p><span>修改人：{{ qct_obj.updator }}</span><span>修改时间：{{ qct_obj.last_edit_timestamp }}</span></p>
-                            <div>当前状态：
+                            <p style="width: 100%;"><span style="width: 13.5%;display:inline-block;">创建人：{{ qct_obj.creator }}</span><span>创建时间：{{ qct_obj.create_timestamp }}</span></p>
+                            <p style="width: 100%;"><span style="width: 13.5%;display:inline-block;">修改人：{{ qct_obj.updator }}</span><span>修改时间：{{ qct_obj.last_edit_timestamp }}</span></p>
+                            <p style="width: 100%;">
+                                当前状态：
                                 {% if qct_obj.is_effective == 1 %}
-                                    <span style="color: red; padding-top: 10px;font-weight:bold;">生效中</span>
+                                    <span style="width: 6%;display:inline-block;color: red; padding-top: 10px;font-weight:bold;font-size: 18px;">
+                                        生效中
+                                    </span>
                                 {% else %}
-                                    <span style="color: #868080; padding-top: 10px;font-weight:bold;">已失效</span>
+                                    <span style="width: 6%;display:inline-block;color: #909e9c; padding-top: 10px;font-weight:bold;font-size: 18px;">
+                                        已失效
+                                    </span>
                                 {% endif %}
-{#                                {{ qct_obj.is_effective }}#}
-                            </div>
+                            阅读统计量：共-
+                                <span style="display:inline-block;color: red; padding-top: 10px;font-weight:bold;font-size: 18px;">
+                                    {{ qct_obj.visit_count }}
+                                </span>
+                            -次阅读
+                            </p>
+
                         </div>
                     </div>
                 </div>
