@@ -60,6 +60,7 @@ class BigClassThemeAdmin(BaseAdmin):
     list_display = (
         'bct_name', 'creator', 'updator', "is_show", 'is_priority', 'last_edit_timestamp',
         'create_timestamp')
+    list_per_page = 30
     list_filter = ("is_show", 'creator', 'updator')
     list_editable = ["is_show", 'is_priority']
 
@@ -72,6 +73,7 @@ class SubClassThemeAdmin(BaseAdmin):
     list_display = (
         'sct_name', 'creator', 'updator', 'bct_id', "is_show", 'is_priority', 'last_edit_timestamp',
         'create_timestamp')
+    list_per_page = 30
     list_filter = ("is_show", 'creator', 'updator', 'bct_id')
     list_editable = ['bct_id', "is_show", 'is_priority']
 
@@ -85,6 +87,7 @@ class QuestionCalssThemeAdmin(BaseAdmin):
         'qct_name', 'creator', 'updator', 'visit_count', 'bct_id', 'sct_id', "is_show", 'is_effective', 'is_popular',
         'is_priority', 'active_endtime',
         'last_edit_timestamp')
+    list_per_page = 30
     list_filter = ("is_show", 'creator', 'updator', 'bct_id', 'sct_id')
     list_editable = ['sct_id', "is_show", 'is_popular', 'is_priority', 'active_endtime', 'is_effective']
 
@@ -97,6 +100,7 @@ class QuestionCalssThemeAdmin(BaseAdmin):
 class LogEntryAdmin(admin.ModelAdmin):
     list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message', 'action_time']
     list_filter = ('user',)
+    list_per_page = 30
     search_fields = ("object_repr",)
     readonly_fields = (
         'object_repr', 'object_id', 'action_flag', 'user', 'change_message', 'action_time', 'content_type')
