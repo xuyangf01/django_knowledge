@@ -16,13 +16,13 @@
 
                     <!-- Main content -->
                     <div class="col-md-8">
-{#                        <article>#}
                             <h3>搜索结果展示：</h3>
                             <table class="table">
                                 <tr>
                                     <th>序号</th>
                                     <th>问题名</th>
-                                    <th>部分内容</th>
+{#                                    <th>部分内容</th>#}
+                                    <th>当前状态</th>
                                 </tr>
                                 {% if query %}
                                     {% for result in page.object_list %}
@@ -30,10 +30,18 @@
                                             <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
                                             <td><a href="{% url 'show_idea:qct_detail' result.object.t_id %}">
                                                 <span style="color: red;font-size: 18px;">{{ result.object.qct_name }}</span></a></td>
-                                            <td><p>{{ result.object.qct_method | safe | slice:':30' }}......</p></td>
+{#                                            <td><p>{{ result.object.qct_method | safe | slice:':30' }}......</p></td>#}
+                                            <td>
+                                                {% if result.object.is_effective == 1 %}
+                                                    <span style="color: red;font-size: 18px;font-weight: bold;">生效中</span>
+                                                {% elif result.object.is_effective == 2 %}
+                                                    <span style="color: #7c7e71;font-size: 18px; font-weight: bold;">已失效</span>
+                                                {% endif %}
+
+                                            </td>
                                         </tr>
                                     {% empty %}
-                                        <p>啥也没找到</p>
+                                        <p style="color: red;font-size: 18px;">啥也没找到</p>
                                     {% endfor %}
 
                                     {% if page.has_previous or page.has_next %}
@@ -51,8 +59,6 @@
                                     {% endif %}
                                 {% endif %}
                             </table>
-{#                        </article>#}
-
 
                     </div>
                 </div>

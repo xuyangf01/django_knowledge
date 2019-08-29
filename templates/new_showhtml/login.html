@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>系统登录</title>
+    <link href="{% static 'login/css/login.css' %}" rel="stylesheet" rev="stylesheet" type="text/css" media="all"/>
+    <link href="{% static 'login/css/demo.css' %}" rel="stylesheet" rev="stylesheet" type="text/css" media="all"/>
+
+
+</head>
+
+<body>
+
+
+<div class="header">
+    <h1 class="headerLogo"><img src="{% static 'images/yobo_meitu_1.jpg' %}" style="margin-left: 30%;"/></h1>
+</div>
+
+<div class="banner">
+    <div class="login-aside">
+        <div id="o-box-up"></div>
+        <div id="o-box-down" style="table-layout:fixed;">
+            <div class="error-box"></div>
+
+            <form class="registerform" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="fm-item">
+                    <label for="logonId" class="form-label">客服知识库登陆：</label>
+                    <label for="logonId" class="form-label" style="color: red;">{{ error }}</label>
+                    <input type="text" placeholder="请输入账号" maxlength="16" name="username" class="i-text">
+                    <div class="ui-form-explain"></div>
+                </div>
+                <div class="fm-item">
+                    <label for="logonId" class="form-label">密码：</label>
+                    <input type="password" placeholder="请输入密码" maxlength="16" name="password" class="i-text">
+                    <div class="ui-form-explain"></div>
+                </div>
+                <div class="fm-item">
+                    <label for="logonId" class="form-label"></label>
+                    <input type="submit" value="" tabindex="4" id="send-btn" class="btn-login">
+                    <div class="ui-form-explain"></div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="bd">
+        <ul>
+            <li style="background:url({% static 'login/themes/login.jpg' %}) #CCE1F3 center 0 no-repeat;"></li>
+            <li style="background:url({% static 'login/themes/theme-pic2.jpg' %}) #BCE0FF center 0 no-repeat;"></li>
+        </ul>
+    </div>
+
+    <div class="hd">
+        <ul></ul>
+    </div>
+</div>
+<script type="text/javascript">jQuery(".banner").slide({
+    titCell: ".hd ul",
+    mainCell: ".bd ul",
+    effect: "fold",
+    autoPlay: true,
+    autoPage: true,
+    trigger: "click"
+});</script>
+
+
+<div class="banner-shadow"></div>
+
+<div class="footer">
+    <p style="color: #00affe;font-size: 18px;">Copyright &copy; 2019.Yabo.KF All rights Collect from 亚博-客服部</p>
+</div>
+
+</body>
+</html>

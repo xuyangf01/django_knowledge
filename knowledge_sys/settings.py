@@ -24,9 +24,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = '23rnma#tz7s5-2tpw5(sp!*6ceqnuurfa18u()*x)xu)w=*soa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
+# DEBUG = False
+# TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -71,10 +71,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
 ]
+
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     "django.core.context_processors.request",
+# )
 
 WSGI_APPLICATION = 'knowledge_sys.wsgi.application'
 

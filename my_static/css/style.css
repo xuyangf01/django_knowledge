@@ -6619,7 +6619,7 @@ Jumbotron / Slider
 Header 
 **/
 header {
-  margin-top: 3.5rem;
+  margin-top: 1.5rem;
   padding: 0 30px 15px; }
 
 header h1 {
@@ -6841,7 +6841,9 @@ html {
     padding: 0; }
 
   #content {
-    padding-left: 270px; }
+    padding-left: 270px;
+    height: 100%;
+  }
   #content-wrapper {
     height: auto;
   }

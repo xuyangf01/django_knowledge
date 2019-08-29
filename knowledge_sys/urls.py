@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 from django.conf import settings
-from show_idea.views import Index, page_not_found
+from show_idea.views import Index, page_not_found, LoginKnowledge, account_logout
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('management/', admin.site.urls),
     re_path(r'^$', Index.as_view(), name="site_index"),
+    re_path(r'login/$', LoginKnowledge.as_view(), name="login"),
+    re_path(r'^logout/$', account_logout, name="logout"),
     re_path(r'show/', include(("show_idea.urls", 'show_idea'), namespace='show_idea')),
     re_path(r'ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
@@ -29,3 +31,4 @@ urlpatterns = [
 ]
 
 handler404 = page_not_found
+LOGIN_URL = '/login/'

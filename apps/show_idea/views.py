@@ -1,25 +1,65 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+from django.utils.decorators import method_decorator
 from django.views import View
 from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 
 
+@login_required
 def page_not_found(request, **kwargs):
     return render(request, 'base_html/404.html')
 
 
+@login_required
+def account_logout(request, **kwargs):
+    logout(request)  # 注销
+    return redirect(reverse("login"))
+
+
+# 登录界面
+class LoginKnowledge(View):
+    def get(self, request):
+        # 如果用户已登录，重定向首页
+        if request.user.is_authenticated:
+            return redirect(reverse("site_index"))
+        return render(request, 'new_showhtml/login.html')
+
+    def post(self, request):
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(username=username, password=password)
+        if user:  # 如果用户对象存在
+            login(request, user)  # 用户登陆
+            return redirect(reverse("show_idea:index"))
+        else:
+            context = {
+                "error": "用户名或者密码错误！！！"
+            }
+            return render(request, 'new_showhtml/login.html', context=context)
+
+
+# 首页视图
+@method_decorator(login_required, name="dispatch")
 class Index(View):
     def get(self, request):
+        # 获取大类主题
         btc_obj_qset = BigClassTheme.objects.filter(is_show=1).order_by('is_priority')
         if not len(btc_obj_qset):
             return render(request, 'base_html/首页无数据.html')
-        qct_qyset = QuestionCalssTheme.objects.filter(is_show=1, is_popular=2).order_by('is_priority')
+        qct_qyset = QuestionCalssTheme.objects.filter(is_show=1, is_popular=2).order_by('is_priority')[:5]
+        qct_visit_qyset = QuestionCalssTheme.objects.filter(is_show=1, is_popular=1).order_by('-visit_count')[:5]
+
         context = {
             "btc_obj_qset": btc_obj_qset,
             "qct_qyset": qct_qyset,
+            "qct_visit_qyset": qct_visit_qyset,
         }
         return render(request, 'new_showhtml/index.html', context=context)
 
 
+# 展示二级标题
+@method_decorator(login_required, name="dispatch")
 class SctListShow(View):
     def get(self, request, t_id):
         btc_obj_qset = BigClassTheme.objects.filter(is_show=1).order_by('is_priority')
@@ -35,6 +75,8 @@ class SctListShow(View):
         return render(request, 'new_showhtml/s_list_show.html', context=context)
 
 
+# 展示问题列表
+@method_decorator(login_required, name="dispatch")
 class QctListShow(View):
     def get(self, request, t_id):
         btc_obj_qset = BigClassTheme.objects.filter(is_show=1).order_by('is_priority')
@@ -50,6 +92,8 @@ class QctListShow(View):
         return render(request, 'new_showhtml/q_list_show.html', context=context)
 
 
+# 展示问题详情
+@method_decorator(login_required, name="dispatch")
 class QctObjectDetail(View):
     def get(self, request, t_id):
         btc_obj_qset = BigClassTheme.objects.filter(is_show=1).order_by('is_priority')
@@ -71,5 +115,3 @@ class QctObjectDetail(View):
             # 设置失效时间60秒
             resp.set_cookie("question_{}".format(t_id), 'reading', max_age=600)
         return resp
-
-

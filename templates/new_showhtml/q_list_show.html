@@ -4,15 +4,12 @@
 {% block title %}
     {{ qct_qyset.0.sct_id.sct_name }}|知识库
 {% endblock %}
-{#{% block head_js %}#}
-{#<base href="" target="_blank">#}
-{#{% endblock %}#}
 
 {% block body_content %}
     <!-- Main navigation -->
 
     <div id="content">
-        <div id="content-wrapper" style="height: 900px;">
+        <div id="content-wrapper" style="height: 100%;">
 
             <!-- Main content area -->
             <main class="container-fluid">
@@ -38,7 +35,7 @@
                                     {% for qtc in qct_qyset %}
                                     <tr>
                                         <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
-                                        <td><a href="{% url 'show_idea:qct_detail' qtc.t_id %}" target="_blank"><h5 style="color: red">{{ qtc.qct_name}}</h5></a></td>
+                                        <td><h5><a href="{% url 'show_idea:qct_detail' qtc.t_id %}" target="_blank"  style="color: red">{{ qtc.qct_name}}</a></h5></td>
                                     </tr>
                                     {% endfor %}
                             </table>

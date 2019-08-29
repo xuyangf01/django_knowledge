@@ -1,7 +1,7 @@
 {% load static %}
 
 <!doctype html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
 	<head>
         <title>
             {% block title %}
@@ -26,13 +26,17 @@
     {% endblock %}
     </head>
 
-    <body>
+    <body style="height: 100%;">
     <div id="sidebar">
 
         <div class="navbar-expand-md navbar-dark">
 
             <header class="d-none d-md-block">
-                <a href="{% url 'site_index' %}"><h1><span>知识库系统</span></h1></a>
+                <a href="{% url 'site_index' %}"><h1><span>客服知识库</span></h1></a>
+                <div style="margin-top: 18px;color: #FFFFFF">当前用户：<span>{{ request.user.username }}</span>
+                <a href="{% url 'logout' %}" style="margin-left: 20px;color: #cacfda"><span>注销</span></a>
+                </div>
+
             </header>
 
 
