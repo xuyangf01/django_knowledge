@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'haystack',            # haystack_whoosh 搜索引擎
-    'show_idea.apps.ShowIdeaConfig',    # 应用app
+    # 'show_idea.apps.ShowIdeaConfig',    # 应用app
+    'show_idea',  # 应用app
+    'celery_mytasks',
+    'djcelery',  # 定时任务celery插件或开发异步框架
     'ckeditor',            # 富文本编辑器
     'ckeditor_uploader',   # 富文本上传功能
-    # 'djcelery',    # 定时任务celery插件或开发异步框架
 
 
 ]
@@ -88,23 +90,23 @@ WSGI_APPLICATION = 'knowledge_sys.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'knowledge_sys',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'knowledge_sys',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
 
 
 
@@ -221,3 +223,31 @@ CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_BROWSE_SHOW_DIRS = True
 
 ################### celery 定时任务配置 #############################
+import djcelery
+from celery.schedules import timedelta, crontab
+
+djcelery.setup_loader()  # 开始加载当前所有安装app中的task
+
+# 使用redis代理来分发任务
+BROKER_URL = 'redis://127.0.0.1:6379/1'
+CELERY_IMPORTS = ('show_idea.tasks')  # 导入任务，可以执行的异步任务
+CELERY_TIMEZONE = 'Asia/Shanghai'  # 中国时区
+CELERYD_CONCURRENCY = 3
+# # 任务存入到数据库中
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERYBEAT_SCHEDULE = {  # 定时器策略
+    # 定时任务一：　每隔30s运行一次
+    # 'test1': {
+    #     "task": "celery_mytasks.tasks.hello_world",
+    #     "schedule": timedelta(seconds=10),
+    #     "args": (),
+    # },
+    u'检查活动是否结束': {
+        "task": "show_idea.tasks.check_effective",
+        "schedule": crontab(minute='*', hour='18-20'),
+        # "schedule": timedelta(seconds=10),
+        "args": (),
+    },
+}
+

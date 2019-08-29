@@ -4,7 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views import View
 from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
+# from datetime import datetime
 
+# def test(request, **kwargs):
+#     res = QuestionCalssTheme.objects.filter(active_endtime__gt=datetime.now()).update(is_effective=2)
+#     return HttpResponse('全部为-已生效')
 
 @login_required
 def page_not_found(request, **kwargs):
