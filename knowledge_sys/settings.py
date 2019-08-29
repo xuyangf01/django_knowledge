@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'haystack',
-    'show_idea.apps.ShowIdeaConfig',
-    'ckeditor',
-    'ckeditor_uploader',
+    'haystack',            # haystack_whoosh 搜索引擎
+    'show_idea.apps.ShowIdeaConfig',    # 应用app
+    'ckeditor',            # 富文本编辑器
+    'ckeditor_uploader',   # 富文本上传功能
+    # 'djcelery',    # 定时任务celery插件或开发异步框架
 
 
 ]
@@ -87,23 +88,23 @@ WSGI_APPLICATION = 'knowledge_sys.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'knowledge_sys',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'knowledge_sys',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
 
 
 
@@ -218,3 +219,5 @@ CKEDITOR_CONFIGS = {
 
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_BROWSE_SHOW_DIRS = True
+
+################### celery 定时任务配置 #############################

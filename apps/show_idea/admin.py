@@ -84,12 +84,12 @@ class QuestionCalssThemeAdmin(BaseAdmin):
     list_display = (
         'qct_name', 'creator', 'updator', 'visit_count', 'bct_id', 'sct_id', "is_show", 'is_effective', 'is_popular',
         'is_priority',
-        'last_edit_timestamp', 'create_timestamp')
+        'last_edit_timestamp', 'active_endtime')
     list_filter = ("is_show", 'creator', 'updator', 'bct_id', 'sct_id')
-    list_editable = ['sct_id', "is_show", 'is_popular', 'is_priority', 'is_effective']
+    list_editable = ['sct_id', "is_show", 'is_popular', 'is_priority', 'is_effective', 'active_endtime']
 
     search_fields = ("qct_name", "creator", "qct_method")
-    fields = ['sct_id', 'qct_name', "qct_method", 'is_show', "is_popular", 'is_priority', 'qct_comment']
+    fields = ['sct_id', 'qct_name', 'active_endtime', "qct_method", 'is_show', "is_popular", 'is_priority', 'qct_comment']
 
 
 # 显示日志应用
@@ -101,24 +101,31 @@ class LogEntryAdmin(admin.ModelAdmin):
     readonly_fields = (
         'object_repr', 'object_id', 'action_flag', 'user', 'change_message', 'action_time', 'content_type')
 
-    def has_add_permission(self, request):
-        # 禁用添加按钮
-        return False
+    actions = ['delete_selected', ]
 
-    def has_delete_permission(self, request, obj=None):
-        # 禁用删除按钮
-        return False
+    # 增加批量删除动作
+    def delete_selected(self, request, queryset):
+        count = len(queryset)
+        if request.user.is_superuser:
+            for i in queryset:
+                i.delete()
+            self.message_user(request, '{}-条记录删除成功！！'.format(count), messages.SUCCESS)
+        else:
+            self.message_user(request, "您不是超级管理员，不可以执行批量删除", messages.WARNING)
+
+    # def has_add_permission(self, request):
+    #     # 禁用添加按钮
+    #     return False
+    #
+    # def has_delete_permission(self, request, obj=None):
+    #     # 禁用删除按钮
+    #     return False
 
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
         # 禁入编辑界面,重定向至原日志显示页面
-        return redirect('/admin/admin/logentry/')
+        return redirect('/management/admin/logentry/')
 
-    def get_actions(self, request):
-        # 在actions中去掉‘删除’操作
-        actions = super(LogEntryAdmin, self).get_actions(request)
-        if 'delete_selected' in actions:
-            del actions['delete_selected']
-        return actions
+    delete_selected.short_description = '删除所选(仅限超级管理员)'
 
 
 admin.site.site_header = '亚博知识库系统'

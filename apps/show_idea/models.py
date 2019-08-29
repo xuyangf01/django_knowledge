@@ -1,7 +1,7 @@
 from django.db import models
 from Base_app.BaseModel_apps import BaseModelApps
 from ckeditor_uploader.fields import RichTextUploadingField
-
+from datetime import datetime
 
 # 大类主题
 class BigClassTheme(BaseModelApps):
@@ -46,6 +46,7 @@ class QuestionCalssTheme(BaseModelApps):
     )
     is_effective = models.SmallIntegerField(verbose_name="当前状态", choices=effective_choice, default=1)
     visit_count = models.BigIntegerField(verbose_name="文章访问量", default=0)
+    active_endtime = models.DateTimeField(verbose_name="结束时间", default=datetime(2021, 1, 1, 00, 00, 00))
 
     def __str__(self):
         return "问题名：{}".format(self.qct_name)
