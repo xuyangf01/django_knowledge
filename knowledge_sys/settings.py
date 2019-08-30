@@ -24,9 +24,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = '23rnma#tz7s5-2tpw5(sp!*6ceqnuurfa18u()*x)xu)w=*soa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
-# TEMPLATE_DEBUG = False
+# DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -90,23 +90,23 @@ WSGI_APPLICATION = 'knowledge_sys.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'knowledge_sys',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'knowledge_sys',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
 
 
 
@@ -159,6 +159,25 @@ TIME_FORMAT = 'H:i:s'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'my_static')
+
+############## session配置 #################################
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # 把这里缓存你的redis服务器ip和port
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        'TIMEOUT': 300,    # 缓存设置过期时间，默认是300秒
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"  # 引擎
+SESSION_CACHE_ALIAS = 'default'  # 使用的缓存别名（默认内存缓存，也可以是memcache），此处别名依赖缓存的设置
+SESSION_COOKIE_AGE = 28800  # Session的cookie失效日期（2周）（默认） 秒   过期后，redis缓存自动删除session
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 是否关闭浏览器使得Session过期
+SESSION_SAVE_EVERY_REQUEST = False  # 是否每次请求都保存Session
 
 
 ############## 添加搜索引擎 #################################
@@ -245,7 +264,7 @@ CELERYBEAT_SCHEDULE = {  # 定时器策略
     # },
     u'检查活动是否结束': {
         "task": "show_idea.tasks.check_effective",
-        "schedule": crontab(minute='*', hour='18-20'),
+        "schedule": crontab(minute='*/10', hour='0-1'),
         # "schedule": timedelta(seconds=10),
         "args": (),
     },
