@@ -1,14 +1,25 @@
 from django.shortcuts import render, redirect, reverse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views import View
 from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
-# from datetime import datetime
 
-# def test(request, **kwargs):
-#     res = QuestionCalssTheme.objects.filter(active_endtime__gt=datetime.now()).update(is_effective=2)
-#     return HttpResponse('全部为-已生效')
+
+@login_required
+def ajax_complete_content(request, **kwargs):
+    # ajax获取输入框的值
+    search_q = request.GET.get("q")
+    if search_q is not None:
+        qct_name_list = []
+        qct_qyset = QuestionCalssTheme.objects.values_list('qct_name').filter(is_show=1, qct_name__contains=search_q)
+        for qct_name_tuple in qct_qyset:
+            qct_name_list.append(qct_name_tuple[0])
+        if qct_name_list:
+            return JsonResponse({"array": qct_name_list})
+    return JsonResponse({"array": ["无类似问题名字，请点击按钮直接搜内容"]})
+
 
 @login_required
 def page_not_found(request, **kwargs):

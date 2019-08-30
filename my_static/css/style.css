@@ -5090,7 +5090,7 @@ button.bg-dark:hover {
 
 .mt-2,
 .my-2 {
-  margin-top: 0.5rem !important; }
+  margin-top: -12.5rem !important; }
 
 .mr-2,
 .mx-2 {
@@ -6855,3 +6855,5 @@ html {
 @media (min-width: 992px) {
   html {
     font-size: 14px; } }
+
+

@@ -2,100 +2,128 @@
 
 <!doctype html>
 <html lang="en" style="height: 100%;">
-	<head>
-        <title>
-            {% block title %}
+<head>
+    <title>
+        {% block title %}
 
-            {% endblock %}
-        </title>
+        {% endblock %}
+    </title>
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Main CSS -->
-        <link rel="shortcut icon" href="{%static "images/yabo.ico" %}" />
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Main CSS -->
+    <link rel="shortcut icon" href="{% static "images/yabo.ico" %}"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-        <!-- Font Awesome -->
-        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+
+
+     <!-- 自动检索搜索框关键字 -->
+    <link rel="stylesheet" href="{% static 'css/ajax_search.css' %}">
+    <link rel="stylesheet" href="{% static 'auto_search/css/jquery-ui.css' %}">
+    <script src="{% static 'auto_search/js/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'auto_search/js/jquery-ui.js' %}"></script>
+    <script>
+        $(function () {
+
+            $("#search").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "{% url 'auto' %}",
+                        type: "get",
+                        dataType: "json",
+                        data: {"q": $("#search").val()},
+                        success: function (data) {
+                            console.log(data);
+                            return response(data['array'])
+                        }
+                    });
+                },
+            });
+        });
+    </script>
     {% block head_js %}
 
     {% endblock %}
     {% block head_css %}
 
     {% endblock %}
-    </head>
+</head>
 
-    <body style="height: 100%;">
-    <div id="sidebar">
+<body style="height: 100%;">
+<div id="sidebar">
 
-        <div class="navbar-expand-md navbar-dark">
+    <div class="navbar-expand-md navbar-dark">
 
-            <header class="d-none d-md-block">
-                <a href="{% url 'site_index' %}"><h1><span>客服知识库</span></h1></a>
-                <div style="margin-top: 18px;color: #FFFFFF">当前用户：<span>{{ request.user.username }}</span>
+        <header class="d-none d-md-block">
+            <a href="{% url 'site_index' %}"><h1><span>客服知识库</span></h1></a>
+            <div style="margin-top: 18px;color: #FFFFFF">当前用户：<span>{{ request.user.username }}</span>
                 <a href="{% url 'logout' %}" style="margin-left: 20px;color: #cacfda"><span>注销</span></a>
-                </div>
-
-            </header>
-
-
-            <!-- Mobile menu toggle and header -->
-            <div class="mobile-header-controls">
-                <a class="navbar-brand d-md-none d-lg-none d-xl-none" href="#"><span>my</span>website</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#SidebarContent"
-                        aria-controls="SidebarContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
             </div>
 
-            <div id="SidebarContent" class="collapse flex-column navbar-collapse">
+        </header>
 
 
-                <!-- Main navigation items -->
-                <nav class="navbar navbar-dark">
-                    <div id="mainNavbar">
-                        <ul class="flex-column mr-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="{% url 'site_index' %}">首页 <span class="sr-only"></span></a>
-                            </li>
+        <!-- Mobile menu toggle and header -->
+        <div class="mobile-header-controls">
+            <a class="navbar-brand d-md-none d-lg-none d-xl-none" href="#"><span>my</span>website</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#SidebarContent"
+                    aria-controls="SidebarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
 
-                            {% for bct in btc_obj_qset %}
+        <div id="SidebarContent" class="collapse flex-column navbar-collapse">
+
+
+            <!-- Main navigation items -->
+            <nav class="navbar navbar-dark">
+                <div id="mainNavbar">
+                    <ul class="flex-column mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'site_index' %}">首页 <span class="sr-only"></span></a>
+                        </li>
+
+                        {% for bct in btc_obj_qset %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle xuyang" href="{% url 'show_idea:sct_list' bct.t_id %}" >{{ bct.bct_name }}</a>
+                                <a class="nav-link dropdown-toggle xuyang"
+                                   href="{% url 'show_idea:sct_list' bct.t_id %}">{{ bct.bct_name }}</a>
                             </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </nav>
-                <!-- Sidebar search form -->
-                <form class="form-inline sidebar-search-form my-2 my-lg-0" method="get" action="/search/" target="_self">
-                    <input class="form-control mr-sm-2" type="text" size="10" placeholder="请输入查询关键字" aria-label="Search" name="q">
-                    <br>
-                    <input class="btn my-2 my-sm-0" type="submit" value="搜索查询">
-                </form>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </nav>
+            <!-- Sidebar search form -->
+            <form class="form-inline sidebar-search-form my-2 my-lg-0" method="get" action="/search/">
+                <input class="form-control mr-sm-2" type="text" size="10" placeholder="请输入查询关键字" aria-label="Search"
+                       name="q" id="search" style="margin-top: 50px;">
+                <br>
+                <input class="btn my-2 my-sm-0" type="submit" value="搜索查询">
+            </form>
 
-            </div>
         </div>
     </div>
+</div>
 
-        {% block body_content %}
+{% block body_content %}
 
-        {% endblock %}
+{% endblock %}
 
 
-        {% block foot_js %}
+{% block foot_js %}
 
-        {% endblock %}
+{% endblock %}
 
-        {% block foot_css %}
+{% block foot_css %}
 
-        {% endblock %}
-        <!-- Bootcamp JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="{% static 'js/popper.min.js' %}" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+{% endblock %}
+<!-- Bootcamp JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+{#        <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>#}
+{#        <script src="{% static 'js/popper.min.js' %}" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>#}
+{#        <script src="{% static 'js/bootstrap.min.js' %}" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>#}
 
-    </body>
+</body>
 </html>

@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 from django.conf import settings
-from show_idea.views import Index, page_not_found, LoginKnowledge, account_logout
+from show_idea.views import Index, page_not_found, LoginKnowledge, account_logout, ajax_complete_content
 
 urlpatterns = [
     path('management/', admin.site.urls),
@@ -27,7 +27,8 @@ urlpatterns = [
     re_path(r'show/', include(("show_idea.urls", 'show_idea'), namespace='show_idea')),
     re_path(r'ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
-    re_path(r'search/', include('haystack.urls')),
+    re_path(r'search/', include('haystack.urls')),           # 搜索引擎
+    re_path(r'auto/', ajax_complete_content, name='auto'),   # 搜索框自动补全
 ]
 
 handler404 = page_not_found
