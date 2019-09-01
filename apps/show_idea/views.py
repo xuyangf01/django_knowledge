@@ -9,6 +9,41 @@ from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 from datetime import datetime
 
 
+@method_decorator(login_required, name="dispatch")
+class MyPasswordChangeView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'new_showhtml/change_pwd.html')
+
+    def post(self, request, *args, **kwargs):
+        my_error_messages = []
+        old_password = request.POST.get('old_password')
+        if not request.user.check_password(old_password):
+            my_error_messages.append("原始密码错误")
+            context = {
+                "my_error_messages": my_error_messages,
+            }
+            return render(request, 'new_showhtml/change_pwd.html', context=context)
+        password1 = request.POST.get('new_password1')
+        password2 = request.POST.get('new_password2')
+        if password1 and password2:
+            if len(password1) < 8:
+                my_error_messages.append("新密码长度少于8位！")
+                context = {
+                    "my_error_messages": my_error_messages,
+                }
+                return render(request, 'new_showhtml/change_pwd.html', context=context)
+            if password1 != password2:
+                my_error_messages.append("两次密码不匹配")
+                context = {
+                    "my_error_messages": my_error_messages,
+                }
+                return render(request, 'new_showhtml/change_pwd.html', context=context)
+        user = request.user
+        user.set_password(password2)
+        user.save()
+        return redirect(reverse("logout"))
+
+
 @login_required
 def ajax_complete_content(request, **kwargs):
     # ajax获取输入框的值
@@ -129,7 +164,7 @@ class QctObjectDetail(View):
         username = request.user.username
         visit_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # redis_conn = get_redis_connection(alias="my_redis_online_4")   # 线上redis数据库
-        redis_conn = get_redis_connection(alias="my_redis_test_3")       # 测试redis数据库
+        redis_conn = get_redis_connection(alias="my_redis_test_3")  # 测试redis数据库
         redis_conn.hset(qct_id, username, visit_time)
 
         # 获取文章id的哈希表所有键值对，以近期时间排序返回前端页面展示

@@ -1,0 +1,70 @@
+{% extends 'base_html/base_index.html' %}
+{% load static %}
+
+{% block title %}
+    密码修改|知识库
+{% endblock %}
+
+{% block body_content %}
+    <!-- Main navigation -->
+    <div id="content">
+        <div id="content-wrapper" style="height: 100%;">
+
+            <!-- Main content area -->
+            <main class="container-fluid">
+
+                <div class="row">
+                    <!-- Main content -->
+                    <div class="col-md-8">
+                        <h3 style="color: red">修改密码</h3>
+
+                        <table class="table">
+
+                            <div class="text-left">
+                                <p>
+                                <ul>
+                                    <li>你的密码不能与其他个人信息太相似。</li>
+                                    <li>你的密码必须包含至少 8 个字符。</li>
+                                    <li>你的密码不能是大家都爱用的常见密码。</li>
+                                    <li>你的密码不能全部为数字。</li>
+                                </ul>
+                                </p>
+                            </div>
+
+
+                            <form class="form-horizontal" action="." method="post">{% csrf_token %}
+                                <tr>
+                                    <td><label for="id_old_password">旧密码:</label></td>
+                                    <td><input type="password" name="old_password" autofocus="" required=""
+                                               id="id_old_password"></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="id_new_password1">新密码:</label></td>
+                                    <td><input type="password" name="new_password1" required="" id="id_new_password1">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label for="id_new_password2">新密码确认:</label></td>
+                                    <td><input type="password" name="new_password2" required="" id="id_new_password2">
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="submit" value="提交修改密码" class="btn btn-primary btn-lg"/></td>
+                                </tr>
+                            </form>
+
+                            {% for error in my_error_messages %}
+                                <p style="color: red;">{{ error }}</p>
+                            {% endfor %}
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+{% endblock %}

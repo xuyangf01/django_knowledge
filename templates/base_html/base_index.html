@@ -59,8 +59,10 @@
 
         <header class="d-none d-md-block">
             <a href="{% url 'site_index' %}"><h1><span>客服知识库</span></h1></a>
-            <div style="margin-top: 18px;color: #FFFFFF">当前用户：<span>{{ request.user.username }}</span>
-                <a href="{% url 'logout' %}" style="margin-left: 20px;color: #cacfda"><span>注销</span></a>
+            <div style="margin-top: 18px;color: #FFFFFF">当前用户：<span>{{ request.user.username }}</span></div>
+            <div style="margin-top: 10px;">
+                <a href="{% url 'logout' %}" style="color: #cacfda"><span>注销</span></a>
+                <a href="{% url 'show_idea:pwd_change' %}" style="margin-left: 40px;color: #cacfda"><span>修改密码</span></a>
             </div>
 
         </header>
