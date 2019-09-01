@@ -6542,7 +6542,8 @@ main {
   height: 100%; }
 
 #content {
-  margin-left: 0; }
+  margin-left: 0;
+}
 
 a, .page-link {
   color: #80B763;
@@ -6806,7 +6807,9 @@ Better nesting of list groups
   border-radius: 0px; }
 
 .list-group-item {
-  background-color: #f8f8f8; }
+  background-color: #f8f8f8;
+  display: inherit;
+}
 
 .list-group-item.active {
   background-color: #80B763;
@@ -6845,7 +6848,7 @@ html {
     height: 100%;
   }
   #content-wrapper {
-    height: auto;
+    height: 100%;
   }
 
   #content #content-wrapper {
@@ -6857,3 +6860,10 @@ html {
     font-size: 14px; } }
 
 
+.list-group-item > span {
+  width: 50%;
+  text-align: center;
+}
+.list-group-item > span:nth-child(2) {
+  text-align: left;
+}

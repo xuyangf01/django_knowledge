@@ -31,11 +31,13 @@
                                     <tr>
                                         <th>序号</th>
                                         <th>问题名</th>
+                                        <th>当前点击量</th>
                                     </tr>
                                     {% for qtc in qct_qyset %}
                                     <tr>
                                         <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
                                         <td><h5><a href="{% url 'show_idea:qct_detail' qtc.t_id %}" target="_blank"  style="color: red">{{ qtc.qct_name}}</a></h5></td>
+                                        <td><span style="color: black">{{ qtc.visit_count }}</span></td>
                                     </tr>
                                     {% endfor %}
                             </table>

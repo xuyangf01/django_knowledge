@@ -24,9 +24,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = '23rnma#tz7s5-2tpw5(sp!*6ceqnuurfa18u()*x)xu)w=*soa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
+# DEBUG = False
+# TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -90,23 +90,23 @@ WSGI_APPLICATION = 'knowledge_sys.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'knowledge_sys',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'knowledge_sys',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
 
 
 
@@ -170,7 +170,29 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
         'TIMEOUT': 300,    # 缓存设置过期时间，默认是300秒
-    }
+    },
+    # 正式线上redis存储访问记录与访问量
+    "my_redis_online_4": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # 把这里缓存你的redis服务器ip和port
+        "LOCATION": "redis://127.0.0.1:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        'TIMEOUT': None,  # 缓存设置过期时间，默认是300秒,None是永不过期，0立即过期
+    },
+    # 测试redis服务器，访问量
+    "my_redis_test_3": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # 把这里缓存你的redis服务器ip和port
+        "LOCATION": "redis://127.0.0.1:6379/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        'TIMEOUT': None,    # 缓存设置过期时间，默认是300秒,None是永不过期，0立即过期
+    },
+
+
 }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"  # 引擎

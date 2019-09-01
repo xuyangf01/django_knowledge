@@ -84,7 +84,7 @@ class SubClassThemeAdmin(BaseAdmin):
 @admin.register(QuestionCalssTheme)
 class QuestionCalssThemeAdmin(BaseAdmin):
     list_display = (
-        'qct_name', 'creator', 'updator', 'visit_count', 'bct_id', 'sct_id', "is_show", 'is_effective', 'is_popular',
+        'qct_name', 'creator', 'updator', 'bct_id', 'sct_id', "is_show", 'is_effective', 'is_popular',
         'is_priority', 'active_endtime',
         'last_edit_timestamp')
     list_per_page = 30

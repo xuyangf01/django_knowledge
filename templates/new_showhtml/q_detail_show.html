@@ -20,14 +20,14 @@
                             <div>子问题目录：<a href="{% url 'show_idea:qct_list' qct_obj.sct_id_id %}">{{ qct_obj.sct_id.sct_name }}</a></div>
                             <div>问题名：<span style="color: red; padding-top: 10px;font-weight:bold;">{{ qct_obj.qct_name }}</span></div>
                             <p style="width: 100%;"><span style="width: 13.5%;display:inline-block;">创建咨询：{{ qct_obj.creator }}</span><span>创建时间：{{ qct_obj.create_timestamp }}</span></p>
-                            <p style="width: 100%;"><span style="width: 13.5%;display:inline-block;">近期调整：{{ qct_obj.updator }}</span><span>最近访问：{{ qct_obj.last_edit_timestamp }}</span></p>
+                            <p style="width: 100%;"><span style="width: 13.5%;display:inline-block;">近期调整：{{ qct_obj.updator }}</span><span>调整时间：{{ qct_obj.last_edit_timestamp }}</span></p>
                             <p style="width: 100%;">
                                 当前状态：
                                 {% if qct_obj.is_effective == 1 %}
                                     <span style="width: 6%;display:inline-block;color: red; padding-top: 10px;font-weight:bold;font-size: 18px;">
                                         生效中
                                     </span>
-                                    活动结束时间：
+                                    内容有效时间：
                                     <span style="width:30%; display:inline-block;color: red; padding-top: 10px;font-weight:bold;font-size: 18px;">{{ qct_obj.active_endtime }}
                                     </span>
                                 {% else %}
@@ -41,13 +41,28 @@
 
                             阅读统计量：共-
                                 <span style="display:inline-block;color: red; padding-top: 10px;font-weight:bold;font-size: 18px;">
-                                    {{ qct_obj.visit_count }}
+                                    {{ visit_count }}
                                 </span>
                             -次
                             </p>
 
                         </div>
                     </div>
+
+
+                    <aside class="col-sm-3" >
+                            <div class="sidebar-box">
+                                <h4 style="color: rgba(144,158,156,0.54)">最近访问记录：</h4>
+                                <div class="list-group list-group-root">
+                                    <p class="list-group-item"><span>访问用户</span><span>访问时间</span></p>
+                                    {% for visit_tuple in recent_visits %}
+                                    <p class="list-group-item"><span>{{ visit_tuple.0 }}</span><span>{{ visit_tuple.1 }}</span></p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </aside>
+
+
                 </div>
                 <div class="row">
 
