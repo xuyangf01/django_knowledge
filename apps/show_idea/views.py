@@ -163,8 +163,8 @@ class QctObjectDetail(View):
         qct_id = "qct_{}".format(t_id)
         username = request.user.username
         visit_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # redis_conn = get_redis_connection(alias="my_redis_online_4")   # 线上redis数据库
-        redis_conn = get_redis_connection(alias="my_redis_test_3")  # 测试redis数据库
+        redis_conn = get_redis_connection(alias="my_redis_online_4")                       # 线上redis数据库
+        # redis_conn = get_redis_connection(alias="my_redis_test_3")                           # 测试redis数据库
         redis_conn.hset(qct_id, username, visit_time)
 
         # 获取文章id的哈希表所有键值对，以近期时间排序返回前端页面展示
