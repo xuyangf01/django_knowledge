@@ -33,7 +33,7 @@
                                     {% for stc in stc_qryset %}
                                     <tr>
                                         <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
-                                        <td><a href="{% url 'show_idea:qct_list' stc.t_id %}"><span style="color: red;font-size: 18px;">{{ stc.sct_name }}</span></a></td>
+                                        <td><a href="{% url 'show_idea:qct_list' stc.t_id %}"><span style="color: #79aec8;font-size: 18px;">{{ stc.sct_name }}</span></a></td>
                                     </tr>
                                     {% endfor %}
                                 </table>

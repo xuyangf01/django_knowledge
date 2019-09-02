@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class BaseModelApps(models.Model):
@@ -6,7 +7,8 @@ class BaseModelApps(models.Model):
     creator = models.CharField("创建人", max_length=20, null=False)
     updator = models.CharField("修改人", max_length=20, default="not")
     create_timestamp = models.DateTimeField("创建时间", auto_now_add=True)
-    last_edit_timestamp = models.DateTimeField("最后修改时间", auto_now=True)
+    # last_edit_timestamp = models.DateTimeField("最后修改时间", auto_now=True)
+    last_edit_timestamp = models.DateTimeField("最后修改时间", default=timezone.now())
     show_choice = (
         (1, '显示'),
         (2, '隐藏'),
@@ -31,4 +33,3 @@ class BaseModelApps(models.Model):
 
     class Meta:
         abstract = True
-

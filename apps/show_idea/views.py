@@ -9,39 +9,27 @@ from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 from datetime import datetime
 
 
+# 密码修改
 @method_decorator(login_required, name="dispatch")
-class MyPasswordChangeView(View):
+class MyChangePwd(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'new_showhtml/change_pwd.html')
 
     def post(self, request, *args, **kwargs):
-        my_error_messages = []
         old_password = request.POST.get('old_password')
         if not request.user.check_password(old_password):
-            my_error_messages.append("原始密码错误")
-            context = {
-                "my_error_messages": my_error_messages,
-            }
-            return render(request, 'new_showhtml/change_pwd.html', context=context)
+            return JsonResponse({'code': "原始密码错误"})
         password1 = request.POST.get('new_password1')
         password2 = request.POST.get('new_password2')
         if password1 and password2:
             if len(password1) < 8:
-                my_error_messages.append("新密码长度少于8位！")
-                context = {
-                    "my_error_messages": my_error_messages,
-                }
-                return render(request, 'new_showhtml/change_pwd.html', context=context)
+                return JsonResponse({'code': "新密码长度少于8位！"})
             if password1 != password2:
-                my_error_messages.append("两次密码不匹配")
-                context = {
-                    "my_error_messages": my_error_messages,
-                }
-                return render(request, 'new_showhtml/change_pwd.html', context=context)
+                return JsonResponse({'code': "两次密码不匹配"})
         user = request.user
         user.set_password(password2)
         user.save()
-        return redirect(reverse("logout"))
+        return JsonResponse({'code': "success"})
 
 
 @login_required
@@ -140,6 +128,8 @@ class QctListShow(View):
             return render(request, 'base_html/404.html')
         qct_qyset = sorted(qct_qyset, key=lambda x: len(x.qct_name))
         context = {
+            "master_obj": qct_qyset[0].bct_id,
+            "child_obj": qct_qyset[0].sct_id,
             "btc_obj_qset": btc_obj_qset,
             "qct_qyset": qct_qyset
         }
@@ -163,16 +153,12 @@ class QctObjectDetail(View):
         qct_id = "qct_{}".format(t_id)
         username = request.user.username
         visit_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        redis_conn = get_redis_connection(alias="my_redis_online_4")                       # 线上redis数据库
+        redis_conn = get_redis_connection(alias="my_redis_online_4")  # 线上redis数据库
         # redis_conn = get_redis_connection(alias="my_redis_test_3")                           # 测试redis数据库
         redis_conn.hset(qct_id, username, visit_time)
 
         # 获取文章id的哈希表所有键值对，以近期时间排序返回前端页面展示
         all_visits = redis_conn.hgetall(qct_id)
-        visit_count = redis_conn.hget(qct_id, "visit_count")
-        if visit_count is not None:
-            # 删除访问量，避免循环渲染到最近访问记录里面
-            all_visits.pop(b'visit_count')
 
         # 进行时间排序，并取出前10条数据进行展示
         recent_visits = sorted(all_visits.items(), key=lambda tup: tup[1], reverse=True)[0:10]
@@ -182,12 +168,12 @@ class QctObjectDetail(View):
             "btc_obj_qset": btc_obj_qset,
             "qct_obj": qct_obj_qury[0],
             "recent_visits": recent_visits,
-            "visit_count": int(visit_count) if visit_count else 0,
         }
         resp = render(request, 'new_showhtml/q_detail_show.html', context=context)
         # 设置cookie，第一次颁发一个reading状态
         if request.COOKIES.get("question_{}".format(t_id)) != "reading":
-            redis_conn.hincrby(qct_id, "visit_count", amount=1)
+            qct_obj_qury[0].visit_count += 1
+            qct_obj_qury[0].save()
             # 设置失效时间600秒，10分钟计算一次访问量
             resp.set_cookie("question_{}".format(t_id), 'reading', max_age=600)
         return resp

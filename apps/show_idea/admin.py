@@ -2,6 +2,7 @@ from django.contrib import admin, messages
 from django.shortcuts import redirect
 from django.contrib.admin.models import LogEntry
 from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
+from django.utils import timezone
 
 admin.site.disable_action('delete_selected')
 
@@ -46,6 +47,7 @@ class BaseAdmin(admin.ModelAdmin):
                                   messages.WARNING)
             # 设置问题的外键bct_id 的值
             obj.bct_id = SubClassTheme.objects.get(t_id=obj.sct_id_id).bct_id
+            obj.last_edit_timestamp = timezone.now()
 
         if not obj.creator:
             obj.creator = request.user.username

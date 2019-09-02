@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    {{ qct_qyset.0.sct_id.sct_name }}|知识库
+    {{ child_obj.sct_name }}|知识库
 {% endblock %}
 
 {% block body_content %}
@@ -16,8 +16,8 @@
             <div class="row">
                 <div class="col-md-8">
                     <div id="content_xuyang">
-                        <div>主问题目录：<a href="{% url 'show_idea:sct_list' qct_qyset.0.bct_id_id %}">{{ qct_qyset.0.bct_id.bct_name }}</a></div>
-                        <div>子问题目录：<a href="{% url 'show_idea:qct_list' qct_qyset.0.sct_id_id %}">{{ qct_qyset.0.sct_id.sct_name }}</a></div>
+                        <div>主问题目录：<a href="{% url 'show_idea:sct_list' master_obj.t_id %}">{{ master_obj.bct_name }}</a></div>
+                        <div>子问题目录：<a href="{% url 'show_idea:qct_list' child_obj.t_id %}">{{ child_obj.sct_name }}</a></div>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                                     {% for qtc in qct_qyset %}
                                     <tr>
                                         <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
-                                        <td><h5><a href="{% url 'show_idea:qct_detail' qtc.t_id %}" target="_blank"  style="color: red">{{ qtc.qct_name}}</a></h5></td>
+                                        <td><h5><a href="{% url 'show_idea:qct_detail' qtc.t_id %}" target="_blank"  style="color: #79aec8">{{ qtc.qct_name}}</a></h5></td>
                                         <td><span style="color: black">{{ qtc.visit_count }}</span></td>
                                     </tr>
                                     {% endfor %}
