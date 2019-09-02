@@ -20,6 +20,7 @@
                         <table class="table">
                             <tr>
                                 <th>序号</th>
+                                <th>子主题名</th>
                                 <th>问题名</th>
                                 <th>当前状态</th>
                                 <th>当前点击量</th>
@@ -30,12 +31,18 @@
                                         <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span>
                                         </td>
                                         {% if result.object.is_effective == 1 %}
+                                            <td><a href="{% url 'show_idea:qct_list' result.object.sct_id_id %}">
+                                                <span style="color: red;font-size: 18px;">{{ result.object.sct_id.sct_name }}</span></a>
+                                            </td>
                                             <td><a href="{% url 'show_idea:qct_detail' result.object.t_id %}">
                                                 <span style="color: red;font-size: 18px;">{{ result.object.qct_name }}</span></a>
                                             </td>
                                             <td><span style="color: red;font-size: 18px;font-weight: bold;">生效中</span>
                                             </td>
                                         {% elif result.object.is_effective == 2 %}
+                                            <td><a href="{% url 'show_idea:qct_list' result.object.sct_id_id %}">
+                                                <span style="color: red;font-size: 18px;">{{ result.object.sct_id.sct_name }}</span></a>
+                                            </td>
                                             <td><a href="{% url 'show_idea:qct_detail' result.object.t_id %}">
                                                 <span style="color: #7c7e71;font-size: 18px;">{{ result.object.qct_name }}</span></a>
                                             </td>
