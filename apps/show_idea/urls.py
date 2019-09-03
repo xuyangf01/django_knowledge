@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, re_path
-from apps.show_idea.views import Index, QctObjectDetail, QctListShow, SctListShow, MyChangePwd
+from apps.show_idea.views import Index, QctObjectDetail, QctListShow, SctListShow, MyChangePwd, CommentFunction
 
 urlpatterns = [
     re_path(r'^index/$', Index.as_view(), name='index'),
@@ -22,4 +22,5 @@ urlpatterns = [
     path('s_list/<int:t_id>/', SctListShow.as_view(), name="sct_list"),
     path('q_list/<int:t_id>/', QctListShow.as_view(), name="qct_list"),
     path('q_datail/<int:t_id>/', QctObjectDetail.as_view(), name="qct_detail"),
+    re_path(r'comment/', CommentFunction.as_view(), name='comment'),  # 评论功能
 ]

@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django_redis import get_redis_connection
 from django.core.paginator import Paginator
-from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
+from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme, QuestionComment
 from datetime import datetime
 
 
@@ -33,6 +33,39 @@ class MyChangePwd(View):
         return JsonResponse({'code': "success"})
 
 
+# 发表评论
+@method_decorator(login_required, name="dispatch")
+class CommentFunction(View):
+    def get(self, request):
+        comment_qset = QuestionComment.objects.filter(is_show=2)
+        context = {
+            "comment_qset": comment_qset
+        }
+        return render(request, 'new_showhtml/check_comment.html', context=context)
+
+    def post(self, request, **kwargs):
+        if request.method == "POST":
+            user = request.user
+            data = request.POST
+            question_id = data.get("question_id")
+            comment_content = data.get("comment_content")
+            if all((question_id, comment_content)):
+                que_comment = QuestionComment()
+                try:
+                    que_obj = QuestionCalssTheme.objects.get(t_id=int(question_id))
+                except:
+                    return render(request, 'base_html/404.html')
+                que_comment.user_obj = user
+                que_comment.question_obj = que_obj
+                que_comment.comment_content = comment_content
+                que_comment.is_show = 2   # 默认提交的评论都不显示， 管理员有权限审核并显示
+                que_comment.save()
+                return JsonResponse({"code": "comment_success"})
+            else:
+                return JsonResponse({'code': "comment_fail"})
+
+
+# 搜索框自动补全
 @login_required
 def ajax_complete_content(request, **kwargs):
     # ajax获取输入框的值
@@ -47,11 +80,13 @@ def ajax_complete_content(request, **kwargs):
     return JsonResponse({"array": ["无类似问题名字，请点击按钮直接搜内容"]})
 
 
+# 404页面
 @login_required
 def page_not_found(request, **kwargs):
     return render(request, 'base_html/404.html')
 
 
+# 注销
 @login_required
 def account_logout(request, **kwargs):
     logout(request)  # 注销
@@ -112,12 +147,12 @@ class SctListShow(View):
         stc_qryset_paginator = Paginator(stc_qryset, 10)
         page = request.GET.get("p", 1)
         # stc_qryset = stc_qryset_paginator.page(page)     # 当页数超出范围或者为其他字符串形式，则抛出异常
-        stc_qryset = stc_qryset_paginator.get_page(page)   # django2.0版本新增功能 超出访问显示最后一页，字符串则显示第一页
+        stc_qryset = stc_qryset_paginator.get_page(page)  # django2.0版本新增功能 超出访问显示最后一页，字符串则显示第一页
         strat_number = (stc_qryset.number - 1) * 10  # 渲染前端展示序号
 
         # 不足10个对象数，前端填充空数据
         count = len(stc_qryset)
-        add_empty_data = [strat_number+i for i in range(count+1, count+1+(10-count))] if count < 10 else None
+        add_empty_data = [strat_number + i for i in range(count + 1, count + 1 + (10 - count))] if count < 10 else None
         context = {
             "btc_obj_qset": btc_obj_qset,
             "stc_qryset": stc_qryset,
@@ -142,12 +177,12 @@ class QctListShow(View):
         qct_qryset_paginator = Paginator(qct_qyset, 10)
         page = request.GET.get("p", 1)
         # qct_qyset = qct_qryset_paginator.page(page)      # 当页数超出范围或者为其他字符串形式，则抛出异常
-        qct_qyset = qct_qryset_paginator.get_page(page)    # django2.0版本新增功能 超出访问显示最后一页，字符串则显示第一页
-        strat_number = (qct_qyset.number - 1) * 10       # 渲染前端展示序号
+        qct_qyset = qct_qryset_paginator.get_page(page)  # django2.0版本新增功能 超出访问显示最后一页，字符串则显示第一页
+        strat_number = (qct_qyset.number - 1) * 10  # 渲染前端展示序号
 
         # 不足10个对象数，前端填充空数据
         count = len(qct_qyset)
-        add_empty_data = [strat_number+i for i in range(count+1, count+1+(10-count))] if count < 10 else None
+        add_empty_data = [strat_number + i for i in range(count + 1, count + 1 + (10 - count))] if count < 10 else None
         context = {
             "master_obj": qct_qyset[0].bct_id,
             "child_obj": qct_qyset[0].sct_id,
@@ -182,15 +217,18 @@ class QctObjectDetail(View):
 
         # 获取文章id的哈希表所有键值对，以近期时间排序返回前端页面展示
         all_visits = redis_conn.hgetall(qct_id)
-
         # 进行时间排序，并取出前10条数据进行展示
         recent_visits = sorted(all_visits.items(), key=lambda tup: tup[1], reverse=True)[0:10]
         recent_visits = [(str(k, encoding='utf-8'), str(v, encoding='utf-8')) for k, v in recent_visits]
+
+        # 获取文章评论
+        comment_qset = QuestionComment.objects.filter(is_show=1, question_obj=qct_obj_qury[0]).order_by('is_priority').order_by('-is_popular').order_by('-create_timestamp')
 
         context = {
             "btc_obj_qset": btc_obj_qset,
             "qct_obj": qct_obj_qury[0],
             "recent_visits": recent_visits,
+            "comment_qset": comment_qset,
         }
         resp = render(request, 'new_showhtml/q_detail_show.html', context=context)
         # 设置cookie，第一次颁发一个reading状态

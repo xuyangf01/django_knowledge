@@ -1,6 +1,7 @@
 from django.db import models
 from Base_app.BaseModel_apps import BaseModelApps
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.auth.models import User
 from datetime import datetime
 
 
@@ -54,4 +55,22 @@ class QuestionCalssTheme(BaseModelApps):
 
     class Meta:
         verbose_name = "3-咨询问题"
+        verbose_name_plural = verbose_name
+
+
+# 用户评论模型
+class QuestionComment(BaseModelApps):
+    user_obj = models.ForeignKey(to=User, on_delete=models.CASCADE, to_field="id",
+                                 verbose_name="评论用户")
+    comment_content = RichTextUploadingField(verbose_name="评论内容", null=True, blank=True, max_length=2048)
+    question_obj = models.ForeignKey(to="QuestionCalssTheme", on_delete=models.CASCADE, to_field="t_id",
+                                     verbose_name="评论文章")
+    reply_question_comment = models.ForeignKey(to="QuestionComment", on_delete=models.CASCADE, to_field="t_id",
+                                               verbose_name="上级评论", null=True)
+
+    def __str__(self):
+        return "文章-{}-有评论".format(self.question_obj.qct_name)
+
+    class Meta:
+        verbose_name = "评论内容"
         verbose_name_plural = verbose_name

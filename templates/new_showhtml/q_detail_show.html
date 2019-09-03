@@ -2,11 +2,12 @@
 {% load static %}
 
 {% block title %}
-{{ qct_obj.qct_name }}|知识库
+    {{ qct_obj.qct_name }}|知识库
 {% endblock %}
 
-{% block body_content %}
 
+
+{% block body_content %}
     <!-- Main navigation -->
     <div id="content">
         <div id="content-wrapper">
@@ -16,11 +17,21 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div id="content_xuyang" style="border-bottom: 3px solid #74c7ece3;">
-                            <div>主问题目录：<a href="{% url 'show_idea:sct_list' qct_obj.bct_id_id %}">{{ qct_obj.bct_id.bct_name }}</a></div>
-                            <div>子问题目录：<a href="{% url 'show_idea:qct_list' qct_obj.sct_id_id %}">{{ qct_obj.sct_id.sct_name }}</a></div>
-                            <div>问题名：<span style="color: red; padding-top: 10px;font-weight:bold;">{{ qct_obj.qct_name }}</span></div>
-                            <p style="width: 100%;"><span style="width: 13.5%;display:inline-block;">创建咨询：{{ qct_obj.creator }}</span><span>创建时间：{{ qct_obj.create_timestamp }}</span></p>
-                            <p style="width: 100%;"><span style="width: 13.5%;display:inline-block;">近期调整：{{ qct_obj.updator }}</span><span>调整时间：{{ qct_obj.last_edit_timestamp }}</span></p>
+                            <div>主问题目录：<a
+                                    href="{% url 'show_idea:sct_list' qct_obj.bct_id_id %}">{{ qct_obj.bct_id.bct_name }}</a>
+                            </div>
+                            <div>子问题目录：<a
+                                    href="{% url 'show_idea:qct_list' qct_obj.sct_id_id %}">{{ qct_obj.sct_id.sct_name }}</a>
+                            </div>
+                            <div>问题名：<span
+                                    style="color: red; padding-top: 10px;font-weight:bold;">{{ qct_obj.qct_name }}</span>
+                            </div>
+                            <p style="width: 100%;"><span
+                                    style="width: 13.5%;display:inline-block;">创建咨询：{{ qct_obj.creator }}</span><span>创建时间：{{ qct_obj.create_timestamp }}</span>
+                            </p>
+                            <p style="width: 100%;"><span
+                                    style="width: 13.5%;display:inline-block;">近期调整：{{ qct_obj.updator }}</span><span>调整时间：{{ qct_obj.last_edit_timestamp }}</span>
+                            </p>
                             <p style="width: 100%;">
                                 当前状态：
                                 {% if qct_obj.is_effective == 1 %}
@@ -39,28 +50,40 @@
                                     </span>
                                 {% endif %}
 
-                            阅读统计量：共-
+                                阅读统计量：共-
                                 <span style="display:inline-block;color: red; padding-top: 10px;font-weight:bold;font-size: 18px;">
                                     {{ qct_obj.visit_count }}
                                 </span>
-                            -次
+                                -次
                             </p>
 
                         </div>
                     </div>
 
 
-                    <aside class="col-sm-3" >
-                            <div class="sidebar-box">
-                                <h4 style="color: rgba(144,158,156,0.54)">最近访问记录：</h4>
-                                <div class="list-group list-group-root">
-                                    <p class="list-group-item"><span>访问用户</span><span>访问时间</span></p>
-                                    {% for visit_tuple in recent_visits %}
-                                    <p class="list-group-item"><span>{{ visit_tuple.0 }}</span><span>{{ visit_tuple.1 }}</span></p>
-                                    {% endfor %}
-                                </div>
+                    <aside class="col-sm-3">
+                        <div class="sidebar-box">
+                            <h4 style="color: rgba(144,158,156,0.54)">最近访问记录：</h4>
+                            <div class="list-group list-group-root">
+                                <p class="list-group-item"><span>访问用户</span><span>访问时间</span></p>
+                                {% for visit_tuple in recent_visits %}
+                                    <p class="list-group-item">
+                                        <span>{{ visit_tuple.0 }}</span><span>{{ visit_tuple.1 }}</span></p>
+                                {% endfor %}
                             </div>
-                        </aside>
+
+                        </div>
+                        {#                        <div class="sidebar-box sidebar-box-bg" style="margin-top: 100px;">#}
+                        <div class="postion_fix">
+                            <div>
+                                <h4 style="color: red">发表评论：</h4>
+                                {#                            <textarea id="TextArea1" cols="1" rows="1" class="ckeditor"></textarea>#}
+                                <textarea id="TextArea1" cols="50" rows="10"></textarea>
+                            </div>
+                            <button type="button" id="comment_btn">提交评论</button>
+                        </div>
+
+                    </aside>
 
 
                 </div>
@@ -71,7 +94,7 @@
                         <article class="art_xuyang">
                             <h4 style="color: black;">知识库内容：</h4>
                             <br>
-                            <div><p>{{ qct_obj.qct_method | safe}}</p></div>
+                            <div><p>{{ qct_obj.qct_method | safe }}</p></div>
                         </article>
                     </div>
                 </div>
@@ -83,14 +106,67 @@
                         <article class="art_xuyang">
                             <h4 style="color: red">内部了解：</h4>
                             <br>
-                            <div><p>{{ qct_obj.qct_comment | safe}}</p></div>
+                            <div><p>{{ qct_obj.qct_comment | safe }}</p></div>
                         </article>
                     </div>
                 </div>
+
+                <div class="row">
+                    <!-- Main content -->
+                    <div class="col-md-8">
+
+                        <article class="art_xuyang">
+                            <h4 style="color: red">用户评论：</h4>
+                            <br>
+                        <div>
+                            {% for comment in comment_qset %}
+                            <p>用户名：{{ comment.user_obj.username }}  -----  时间：{{ comment.create_timestamp }}</p>
+                            <p>评论内容：{{ comment.comment_content | safe }}</p>
+                            {% endfor %}
+                        </div>
+
+                        </article>
+                    </div>
+                </div>
+
 
             </main>
 
         </div>
     </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#comment_btn").click(function () {
+                var question_id = {{ qct_obj.t_id }}
+                var comment_content = $('#TextArea1').val();
+                if (comment_content === '') { // 只能用 === 运算来测试某个值是否是未定义的
+                    alert("评论不能为空！！！！");
+                } else {
+                     $.ajax({
+                        cache: false,
+                        url: "{% url 'show_idea:comment' %}",
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            "question_id": question_id,
+                            "comment_content": comment_content,
+                        },
+                        success: function (data) {
+                            var code = data['code'];
+                            if (code === 'comment_success') {
+                                alert("评论发表-成功，等待管理员审核！！！");
+                                $('#TextArea1').val('');
+                            } else {
+                                alert("评论发表-失败，请稍候再试！！！");
+                            }
+                        }
+                    });
+                }
+            })
+        });
+
+    </script>
 {% endblock %}
 

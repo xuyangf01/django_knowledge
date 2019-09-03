@@ -1,0 +1,81 @@
+{% extends 'base_html/base_index.html' %}
+{% load static %}
+
+{% block title %}
+    用户评论展示|知识库
+{% endblock %}
+
+
+
+{% block body_content %}
+    <!-- Main navigation -->
+    <div id="content">
+        <div id="content-wrapper">
+
+            <!-- Main content area -->
+            <main class="container-fluid">
+                <div class="row">
+                    <!-- Main content -->
+                    <div class="col-md-8">
+
+                        <article class="art_xuyang">
+                            <h4 style="color: red">用户评论：</h4>
+                            <br>
+                        <div>
+                            {% for comment in comment_qset %}
+                            <p style="border-top: solid 2px #5bdce2c7">第{{ forloop.counter }}条：  用户名：{{ comment.user_obj.username }}  -----  时间：{{ comment.create_timestamp }}</p>
+                            <p>文章标题：{{ comment.question_obj.qct_name }}</p>
+                            <p>评论内容：{{ comment.comment_content | safe }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="postion_fix">
+                            <div>
+                                <h4 style="color: red">发表评论：</h4>
+                                {#                            <textarea id="TextArea1" cols="1" rows="1" class="ckeditor"></textarea>#}
+                                <textarea id="TextArea1" cols="50" rows="10"></textarea>
+                            </div>
+                            <button type="button" id="comment_btn">提交评论</button>
+                        </div>
+
+                        </article>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#comment_btn").click(function () {
+                var question_id = {{ qct_obj.t_id }}
+                var comment_content = $('#TextArea1').val();
+                if (comment_content === '') { // 只能用 === 运算来测试某个值是否是未定义的
+                    alert("评论不能为空！！！！");
+                } else {
+                     $.ajax({
+                        cache: false,
+                        url: "{% url 'show_idea:comment' %}",
+                        type: 'post',
+                        dataType: "json",
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            "question_id": question_id,
+                            "comment_content": comment_content,
+                        },
+                        success: function (data) {
+                            var code = data['code'];
+                            if (code === 'comment_success') {
+                                alert("评论发表-成功，等待管理员审核！！！");
+                                $('#TextArea1').val('');
+                            } else {
+                                alert("评论发表-失败，请稍候再试！！！");
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+{% endblock %}
+

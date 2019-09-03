@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.shortcuts import redirect
 from django.contrib.admin.models import LogEntry
-from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
+from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme, QuestionComment
 from django.utils import timezone
 
 admin.site.disable_action('delete_selected')
@@ -95,6 +95,35 @@ class QuestionCalssThemeAdmin(BaseAdmin):
 
     search_fields = ("qct_name", "creator", "qct_method")
     fields = ['sct_id', 'qct_name', 'active_endtime', "qct_method", 'is_show', "is_popular", 'is_priority', 'qct_comment']
+
+
+@admin.register(QuestionComment)
+class QuestionCommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'user_obj', 'question_obj', 'comment_content', "is_show", 'is_popular', 'is_priority', 'create_timestamp')
+    list_per_page = 30
+    list_filter = ("is_show", 'user_obj', "is_show", 'is_popular', 'is_priority')
+    list_editable = ['is_show', 'is_popular', 'is_priority']
+
+    search_fields = ("user_obj", "comment_content")
+    # fields = ['sct_id', 'qct_name', 'active_endtime', "qct_method", 'is_show', "is_popular", 'is_priority', 'qct_comment']
+    actions = ['delete_selected', ]
+
+    # 增加批量删除动作
+    def delete_selected(self, request, queryset):
+        count = len(queryset)
+        if request.user.is_superuser:
+            for i in queryset:
+                i.delete()
+            self.message_user(request, '{}-条记录删除成功！！'.format(count), messages.SUCCESS)
+        else:
+            self.message_user(request, "您不是超级管理员，不可以执行批量删除", messages.WARNING)
+
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        # 禁入编辑界面,重定向至原日志显示页面
+        return redirect('/management/show_idea/questioncomment/')
+
+    delete_selected.short_description = '删除所选(仅限超级管理员)'
 
 
 # 显示日志应用

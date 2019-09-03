@@ -1195,6 +1195,15 @@ pre {
   .table th:first-child{
     width: 20%;
   }
+  .postion_fix {
+    position: fixed;
+    top: 30%;
+    left: 72%;
+    right: 0px;
+    bottom: 0px;
+    margin: auto;
+  }
+
   .table td:first-child {
     width: 20%;
   }
