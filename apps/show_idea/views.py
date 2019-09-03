@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views import View
 from django_redis import get_redis_connection
+from django.core.paginator import Paginator
 from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme
 from datetime import datetime
 
@@ -106,12 +107,22 @@ class SctListShow(View):
         if not len(btc_obj_qset):
             return render(request, 'base_html/首页无数据.html')
         stc_qryset = SubClassTheme.objects.filter(is_show=1, bct_id=t_id).order_by('is_priority')
-        if not len(stc_qryset):
-            return render(request, 'base_html/404.html')
         stc_qryset = sorted(stc_qryset, key=lambda x: len(x.sct_name))
+        # 添加分页器
+        stc_qryset_paginator = Paginator(stc_qryset, 10)
+        page = request.GET.get("p", 1)
+        # stc_qryset = stc_qryset_paginator.page(page)     # 当页数超出范围或者为其他字符串形式，则抛出异常
+        stc_qryset = stc_qryset_paginator.get_page(page)   # django2.0版本新增功能 超出访问显示最后一页，字符串则显示第一页
+        strat_number = (stc_qryset.number - 1) * 10  # 渲染前端展示序号
+
+        # 不足10个对象数，前端填充空数据
+        count = len(stc_qryset)
+        add_empty_data = [strat_number+i for i in range(count+1, count+1+(10-count))] if count < 10 else None
         context = {
             "btc_obj_qset": btc_obj_qset,
             "stc_qryset": stc_qryset,
+            "add_empty_data": add_empty_data,
+            "strat_number": strat_number
         }
         return render(request, 'new_showhtml/s_list_show.html', context=context)
 
@@ -127,11 +138,23 @@ class QctListShow(View):
         if not len(qct_qyset):
             return render(request, 'base_html/404.html')
         qct_qyset = sorted(qct_qyset, key=lambda x: len(x.qct_name))
+        # 添加分页器
+        qct_qryset_paginator = Paginator(qct_qyset, 10)
+        page = request.GET.get("p", 1)
+        # qct_qyset = qct_qryset_paginator.page(page)      # 当页数超出范围或者为其他字符串形式，则抛出异常
+        qct_qyset = qct_qryset_paginator.get_page(page)    # django2.0版本新增功能 超出访问显示最后一页，字符串则显示第一页
+        strat_number = (qct_qyset.number - 1) * 10       # 渲染前端展示序号
+
+        # 不足10个对象数，前端填充空数据
+        count = len(qct_qyset)
+        add_empty_data = [strat_number+i for i in range(count+1, count+1+(10-count))] if count < 10 else None
         context = {
             "master_obj": qct_qyset[0].bct_id,
             "child_obj": qct_qyset[0].sct_id,
             "btc_obj_qset": btc_obj_qset,
-            "qct_qyset": qct_qyset
+            "qct_qyset": qct_qyset,
+            "add_empty_data": add_empty_data,
+            "strat_number": strat_number
         }
         return render(request, 'new_showhtml/q_list_show.html', context=context)
 

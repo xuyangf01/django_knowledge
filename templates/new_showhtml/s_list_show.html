@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-{{ stc_qryset.0.bct_id.bct_name }}|知识库
+    {{ stc_qryset.0.bct_id.bct_name }}|知识库
 {% endblock %}
 
 {% block body_content %}
@@ -12,40 +12,83 @@
 
             <!-- Main content area -->
             <main class="container-fluid">
-            <div class="row">
-                <div class="col-md-8">
-                    <div id="content_xuyang">
-                        <div>主问题目录：<span style="font-size:20px;font-weight:bold;color: black;">{{ stc_qryset.0.bct_id.bct_name }}</span></div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div id="content_xuyang">
+                            <div>主问题目录：<span
+                                    style="font-size:20px;font-weight:bold;color: black;">{{ stc_qryset.0.bct_id.bct_name }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
                 <div class="row">
                     <!-- Main content -->
                     <div class="col-md-8">
-{#                        <article>#}
-                         <h3>子问题目录</h3>
-                                <table class="table">
-                                    <tr>
-                                        <th>序号</th>
-                                        <th>子类名称</th>
-                                    </tr>
-                                    {% for stc in stc_qryset %}
-                                    <tr>
-                                        <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
-                                        <td><a href="{% url 'show_idea:qct_list' stc.t_id %}"><span style="color: #79aec8;font-size: 18px;">{{ stc.sct_name }}</span></a></td>
-                                    </tr>
-                                    {% endfor %}
-                                </table>
+                        <h3>子问题目录</h3>
+                        <table class="table">
+                            <tr>
+                                <th>序号</th>
+                                <th>子类名称</th>
+                            </tr>
+                            {% for stc in stc_qryset %}
+                                <tr>
+                                    <td><span style="color: green; font-size: 14px;">{{ forloop.counter|add:strat_number }}</span></td>
+                                    <td>
+                                        <a href="{% url 'show_idea:qct_list' stc.t_id %}">
+                                        <span style="color: #79aec8;font-size: 18px;">{{ stc.sct_name }}</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
 
-{#                        </article>#}
+                            {% for num in add_empty_data %}
+                                <tr>
+                                    <td><span style="color: green; font-size: 14px;">{{ num }}</span></td>
+                                    <td><span style="color: #79aec8;font-size: 18px;">-----</span></td>
+                                </tr>
+                            {% endfor %}
 
+                        </table>
+                        <span class="step-links">
+                            {% if stc_qryset.has_previous %}
+                                <a href="?p={{ stc_qryset.previous_page_number }}" style="color: #12a6c5;">上一页</a>
+                            {% endif %}
 
+                            <span class="current" style="color:#000000b5;font-size: 15px; font-weight: bold; margin-left: 10px;margin-right: 10px;">
+                                当前第{{ stc_qryset.number }}页 -- 共{{ stc_qryset.paginator.num_pages }}页
+                            </span>
+
+                            {% if stc_qryset.has_next %}
+                                <a href="?p={{ stc_qryset.next_page_number }}" style="color: #12a6c5;">下一页</a>
+                            {% endif %}
+                            <span style="margin-left: 2%;font-weight: bold;color:#000000b5;">
+                                <input type="button" class="page_btn" value="点击跳转至" style="height: 5%;background-color: #007bff; color: #FFFFFF;">
+                                <input type="text" name="page" class="page_input" style="width: 3%;">
+                                页
+                        </span>
+
+                        </span>
                     </div>
                 </div>
             </main>
 
         </div>
     </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".page_btn").click(function () {
+                var page = $('.page_input').val();
+                if (page === ''|| !(/(^[1-9]\d*$)/.test(page))) { // 只能用 === 运算来测试某个值是否是未定义的
+                    alert("页数不能为空，只能输入正整数！！！");
+                } else {
+                    window.location.href="?p="+page;
+                }
+            })
+        });
+
+    </script>
+
 {% endblock %}
 

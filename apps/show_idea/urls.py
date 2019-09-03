@@ -19,7 +19,7 @@ from apps.show_idea.views import Index, QctObjectDetail, QctListShow, SctListSho
 urlpatterns = [
     re_path(r'^index/$', Index.as_view(), name='index'),
     path('change_pwd/', MyChangePwd.as_view(), name='pwd_change'),
-    path('q_list/<int:t_id>/', QctListShow.as_view(), name="qct_list"),
     path('s_list/<int:t_id>/', SctListShow.as_view(), name="sct_list"),
+    path('q_list/<int:t_id>/', QctListShow.as_view(), name="qct_list"),
     path('q_datail/<int:t_id>/', QctObjectDetail.as_view(), name="qct_detail"),
 ]

@@ -25,7 +25,6 @@
                 <div class="row">
                     <!-- Main content -->
                     <div class="col-md-8">
-{#                        <article>#}
                          <h3>问题展示</h3>
                             <table class="table">
                                     <tr>
@@ -35,19 +34,60 @@
                                     </tr>
                                     {% for qtc in qct_qyset %}
                                     <tr>
-                                        <td><span style="color: green; font-size: 14px;">{{ forloop.counter }}</span></td>
+                                        <td><span style="color: green; font-size: 14px;">{{ forloop.counter|add:strat_number }}</span></td>
                                         <td><h5><a href="{% url 'show_idea:qct_detail' qtc.t_id %}" target="_blank"  style="color: #79aec8">{{ qtc.qct_name}}</a></h5></td>
                                         <td><span style="color: black">{{ qtc.visit_count }}</span></td>
                                     </tr>
                                     {% endfor %}
-                            </table>
 
-{#                        </article>#}
+                                    {% for num in add_empty_data %}
+                                        <tr>
+                                            <td><span style="color: green; font-size: 14px;">{{ num }}</span></td>
+                                            <td><span style="color: #79aec8; font-size: 18px;">-----</span></td>
+                                            <td><span style="color: #79aec8; font-size: 18px;">-----</span></td>
+                                        </tr>
+                                    {% endfor %}
+
+                            </table>
+                        <span class="step-links">
+                            {% if qct_qyset.has_previous %}
+                                <a href="?p={{ qct_qyset.previous_page_number }}" style="color: #12a6c5;">上一页</a>
+                            {% endif %}
+
+                            <span class="current" style="color:#000000b5;font-size: 15px; font-weight: bold; margin-left: 10px;margin-right: 10px;">
+                                当前第{{ qct_qyset.number }}页 -- 共{{ qct_qyset.paginator.num_pages }}页
+                            </span>
+
+                            {% if qct_qyset.has_next %}
+                                <a href="?p={{ qct_qyset.next_page_number }}" style="color: #12a6c5;">下一页</a>
+                            {% endif %}
+                            <span style="margin-left: 2%;font-weight: bold;color:#000000b5;">
+                                <input type="button" class="page_btn" value="点击跳转至" style="height: 5%;background-color: #007bff; color: #FFFFFF;">
+                                <input type="text" name="page" class="page_input" style="width: 3%;">
+                                页
+                            </span>
+
+                        </span>
+
+
                     </div>
                 </div>
             </main>
 
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".page_btn").click(function () {
+                var page = $('.page_input').val();
+                if (page === ''|| !(/(^[1-9]\d*$)/.test(page))) { // 只能用 === 运算来测试某个值是否是未定义的
+                    alert("页数不能为空，只能输入正整数！！！");
+                } else {
+                    window.location.href="?p="+page;
+                }
+            })
+        });
+
+    </script>
 {% endblock %}
 
