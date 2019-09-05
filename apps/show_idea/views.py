@@ -284,8 +284,9 @@ class QctObjectDetail(View):
         recent_visits = [(str(k, encoding='utf-8'), str(v, encoding='utf-8')) for k, v in recent_visits]
 
         # 获取文章评论
-        comment_qset = QuestionComment.objects.filter(is_show=1, question_obj=qct_obj_qury[0]).order_by(
-            'is_priority').order_by('-is_popular').order_by('-create_timestamp')
+        comment_qset = QuestionComment.objects.filter(is_show=1, question_obj=qct_obj_qury[0]).order_by('-create_timestamp')
+        comment_qset = sorted(comment_qset, key=lambda comment: comment.is_popular, reverse=True)
+
         # 获取二级评论
         all_comment_qset_dict = collections.OrderedDict()
         for comment_first in comment_qset:

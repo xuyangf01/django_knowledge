@@ -1197,11 +1197,12 @@ pre {
   }
   .postion_fix {
     position: fixed;
-    top: 30%;
+    top: 75%;
     left: 72%;
     right: 0px;
     bottom: 0px;
     margin: auto;
+    z-index:99999;
   }
 
   .table td:first-child {

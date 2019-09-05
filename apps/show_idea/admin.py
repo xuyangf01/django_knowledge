@@ -100,10 +100,10 @@ class QuestionCalssThemeAdmin(BaseAdmin):
 @admin.register(QuestionComment)
 class QuestionCommentAdmin(admin.ModelAdmin):
     list_display = (
-        'user_obj', 'question_obj', 'comment_content', "is_show", 'is_popular', 'is_priority', 'create_timestamp')
+        'user_obj', 'question_obj', 'reply_question_comment', 'comment_content', "is_show", 'is_popular', 'create_timestamp')
     list_per_page = 30
-    list_filter = ("is_show", 'user_obj', "is_show", 'is_popular', 'is_priority')
-    list_editable = ['is_show', 'is_popular', 'is_priority']
+    list_filter = ("is_show", 'user_obj', "is_show", 'is_popular')
+    list_editable = ['is_show', 'is_popular']
 
     search_fields = ("user_obj", "comment_content")
     # fields = ['sct_id', 'qct_name', 'active_endtime', "qct_method", 'is_show', "is_popular", 'is_priority', 'qct_comment']

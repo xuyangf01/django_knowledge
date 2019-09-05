@@ -69,7 +69,9 @@ class QuestionComment(BaseModelApps):
                                                verbose_name="上级评论", null=True)
 
     def __str__(self):
-        return "文章-{}-有评论".format(self.question_obj.qct_name)
+        if self.reply_question_comment is None:
+            return '此为管理员回复的评论'
+        return "此为用户一级评论"
 
     class Meta:
         verbose_name = "评论内容"
