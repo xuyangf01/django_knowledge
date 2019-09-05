@@ -119,9 +119,17 @@
                             <h4 style="color: red">用户评论：</h4>
                             <br>
                         <div>
-                            {% for comment in comment_qset %}
-                            <p>用户名：{{ comment.user_obj.username }}  -----  时间：{{ comment.create_timestamp }}</p>
-                            <p>评论内容：{{ comment.comment_content | safe }}</p>
+                            {% for first, second_qst in all_comment_qset_dict.items %}
+                            <h5 style="color: #12a6c5">第-{{ forloop.counter  }}-条评论</h5>
+                            <p>用户名：{{ first.user_obj.username }}  ----------------  时间：{{ first.create_timestamp }}</p>
+                            <p>评论内容：<br/><br/><span style="color: #0f74a8">{{ first.comment_content | safe }}<span></p>
+                            <br/>
+                            <p style="color: red; font-size: 15px;">管理员回复：</p>
+                                {% for second in second_qst %}
+                                <p>回复第-{{ forloop.counter }}-次 ---------------- 回复时间：{{ first.create_timestamp }}</p>
+                                    <p>回复内容：<span style="color: red">{{ second.comment_content | safe }}</span></p>
+                                <br/>
+                                {% endfor %}
                             {% endfor %}
                         </div>
 

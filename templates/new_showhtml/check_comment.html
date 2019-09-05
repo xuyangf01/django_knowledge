@@ -17,65 +17,236 @@
                 <div class="row">
                     <!-- Main content -->
                     <div class="col-md-8">
-
                         <article class="art_xuyang">
-                            <h4 style="color: red">用户评论：</h4>
+                            <h4 style="color: red">未审核的评论：</h4>
                             <br>
-                        <div>
-                            {% for comment in comment_qset %}
-                            <p style="border-top: solid 2px #5bdce2c7">第{{ forloop.counter }}条：  用户名：{{ comment.user_obj.username }}  -----  时间：{{ comment.create_timestamp }}</p>
-                            <p>文章标题：{{ comment.question_obj.qct_name }}</p>
-                            <p>评论内容：{{ comment.comment_content | safe }}</p>
-                            {% endfor %}
-                        </div>
-                        <div class="postion_fix">
                             <div>
-                                <h4 style="color: red">发表评论：</h4>
-                                {#                            <textarea id="TextArea1" cols="1" rows="1" class="ckeditor"></textarea>#}
-                                <textarea id="TextArea1" cols="50" rows="10"></textarea>
+                                {% for first, second_qst in no_reply_comment_dict.items %}
+                                    <p style="border-top: solid 2px #5bdce2c7">第{{ forloop.counter }}条：
+                                        用户名：{{ first.user_obj.username }} ----- 时间：{{ first.create_timestamp }}-------<input type="button" class="delete_comment" comment_id="{{ first.t_id }}" value="删除本条评论以及回复"/>
+                                        ----- 前台现在状态：
+                                        {% if first.is_show == 1 %}
+                                            <span style="color: red;">显示</span>
+                                            <input type="button" class="hidden_comment" comment_id="{{ first.t_id }}" value="点击更改为隐藏"/>
+                                        {% else %}
+                                             <span style="color: red;">隐藏</span>
+                                            <input type="button" class="show_comment" comment_id="{{ first.t_id }}" value="点击更改为显示"/>
+                                        {% endif %}
+
+
+                                    </p>
+                                    <p>文章标题：{{ first.question_obj.qct_name }}</p>
+                                    <p>评论内容：{{ first.comment_content | safe }}</p>
+                                    <div><a href="javascript:" class="reply_btn" tid="{{ first.t_id }}"
+                                            qct_id="{{ first.question_obj.t_id }}">回复</a></div>
+                                    <button class="comment_btn" type="button" tid="{{ first.t_id }}"
+                                            qct_id="{{ first.question_obj.t_id }}" style="display: none">提交评论</button>
+                                {% endfor %}
                             </div>
-                            <button type="button" id="comment_btn">提交评论</button>
-                        </div>
+
 
                         </article>
+
+                        <article class="art_xuyang">
+                            <h4 style="color: red">已审核回复的评论：</h4>
+                            <br>
+                            <div>
+                                {% for comment_data_list in commentset %}
+                                    <p style="border-top: solid 2px #5bdce2c7">第{{ forloop.counter }}条：
+                                        用户名：{{ comment_data_list.0.user_obj.username }} ----- 时间：{{ comment_data_list.0.create_timestamp }}-------<input type="button" class="delete_comment" comment_id="{{ comment_data_list.0.t_id }}" value="删除本条评论以及回复"/>
+                                        ----- 前台现在状态：
+                                        {% if comment_data_list.0.is_show == 1 %}
+                                            <span style="color: red;">显示</span>
+                                            <input type="button" class="hidden_comment" comment_id="{{ comment_data_list.0.t_id }}" value="点击更改为隐藏"/>
+                                        {% else %}
+                                             <span style="color: red;">隐藏</span>
+                                            <input type="button" class="show_comment" comment_id="{{ comment_data_list.0.t_id }}" value="点击更改为显示"/>
+                                        {% endif %}
+
+
+                                    </p>
+                                    <p>文章标题：{{ comment_data_list.0.question_obj.qct_name }}</p>
+                                    <p>评论内容：{{ comment_data_list.0.comment_content | safe }}</p>
+
+                                    <p>管理员回复：</p>
+                                    {% for second in comment_data_list.1 %}
+                                    <p style="color: red;">第-{{ forloop.counter }}-次回复：{{ second.comment_content | safe }}</p>
+                                    <p>回复时间：{{ comment_data_list.0.create_timestamp }}
+                                        <input type="button" class="delete_comment" comment_id="{{ second.t_id }}" value="删除回复"/>
+                                    </p>
+                                    {% endfor %}
+                                    <div><a href="javascript:" class="reply_btn" tid="{{ comment_data_list.0.t_id }}"
+                                            qct_id="{{ comment_data_list.0.question_obj.t_id }}">回复</a></div>
+                                    <button class="comment_btn" type="button" tid="{{ comment_data_list.0.t_id }}"
+                                            qct_id="{{ comment_data_list.0.question_obj.t_id }}" style="display: none">提交评论</button>
+                                {% endfor %}
+                            </div>
+{#                            // 上下分页#}
+                            <span class="step-links">
+                            {% if commentset.has_previous %}
+                                <a href="?page={{ commentset.previous_page_number }}" style="color: #12a6c5;">上一页</a>
+                            {% endif %}
+
+                            <span class="current" style="color:#000000b5;font-size: 15px; font-weight: bold; margin-left: 10px;margin-right: 10px;">
+                                当前第{{ commentset.number }}页 -- 共{{ commentset.paginator.num_pages }}页
+                            </span>
+
+                            {% if commentset.has_next %}
+                                <a href="?page={{ commentset.next_page_number }}" style="color: #12a6c5;">下一页</a>
+                            {% endif %}
+                            <span style="margin-left: 2%;font-weight: bold;color:#000000b5;">
+                                <input type="button" class="page_btn" value="点击跳转至" style="height: 5%;background-color: #007bff; color: #FFFFFF;">
+                                <input type="text" name="page" class="page_input" style="width: 3%;">
+                                页
+                            </span>
+
+                        </span>
+
+                        </article>
+
+
                     </div>
                 </div>
             </main>
 
         </div>
     </div>
-
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#comment_btn").click(function () {
-                var question_id = {{ qct_obj.t_id }}
-                var comment_content = $('#TextArea1').val();
-                if (comment_content === '') { // 只能用 === 运算来测试某个值是否是未定义的
-                    alert("评论不能为空！！！！");
-                } else {
-                     $.ajax({
-                        cache: false,
-                        url: "{% url 'show_idea:comment' %}",
-                        type: 'post',
-                        dataType: "json",
-                        data: {
-                            'csrfmiddlewaretoken': '{{ csrf_token }}',
-                            "question_id": question_id,
-                            "comment_content": comment_content,
-                        },
-                        success: function (data) {
-                            var code = data['code'];
-                            if (code === 'comment_success') {
-                                alert("评论发表-成功，等待管理员审核！！！");
-                                $('#TextArea1').val('');
-                            } else {
-                                alert("评论发表-失败，请稍候再试！！！");
+        $(function () {
+            //页面加载完毕后开始执行的事件
+            $(".reply_btn").click(function () {
+                $(".reply_textarea").remove();
+                $(".comment_btn").hide();
+                $(this).parent().append("<div class='reply_textarea'><textarea id=\"TextArea1\" name='reply_comment' cols='40' rows='5'></textarea><br/></div>");
+                $(this).parent().next().show();
+            });
+
+            {#// 删除评论#}
+            $(".delete_comment").click(function () {
+                 $.ajax({
+                            cache: false,
+                            url: "{% url 'show_idea:comment' %}",
+                            type: 'delete',
+                            dataType: "json",
+                            data: {
+                                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+                                'comment_id': $(this).attr("comment_id")
+                            },
+                             beforeSend: function (XMLHttpRequest) {
+                                XMLHttpRequest.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                            },
+                            success: function (data) {
+                                var code = data['code'];
+                                if (code === 'comment_success') {
+                                    alert("该评论删除-成功！！！");
+                                    window.location.reload();
+                                } else {
+                                    alert("该评论删除-失败，请稍候再试！！！");
+                                }
                             }
-                        }
-                    });
+                        });
+            });
+            {#// 显示详情页展示#}
+            $(".show_comment").click(function () {
+                 $.ajax({
+                            cache: false,
+                            url: "{% url 'show_idea:comment' %}",
+                            type: 'put',
+                            dataType: "json",
+                            data: {
+                                'comment_id': $(this).attr("comment_id"),
+                                "is_show": 1
+                            },
+                             beforeSend: function (XMLHttpRequest) {
+                                XMLHttpRequest.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                            },
+                            success: function (data) {
+                                var code = data['code'];
+                                if (code === 'comment_success') {
+                                    alert("该评论文章详情页面显示成功！！！");
+                                    window.location.reload();
+                                } else {
+                                    alert("该评论文章详情页面显示失败！！！");
+                                }
+                            }
+                        });
+            });
+            {#// 隐藏详情页展示#}
+            $(".hidden_comment").click(function () {
+                 $.ajax({
+                            cache: false,
+                            url: "{% url 'show_idea:comment' %}",
+                            type: 'put',
+                            dataType: "json",
+                            data: {
+                                'comment_id': $(this).attr("comment_id"),
+                                "is_show": 2
+                            },
+                             beforeSend: function (XMLHttpRequest) {
+                                XMLHttpRequest.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                            },
+                            success: function (data) {
+                                var code = data['code'];
+                                if (code === 'comment_success') {
+                                    alert("该评论文章详情页面隐藏成功！！！");
+                                    window.location.reload();
+                                } else {
+                                    alert("该评论文章详情页面隐藏失败！！！");
+                                }
+                            }
+                        });
+            });
+        });
+    </script>
+{#        // 管理员评论回复#}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".comment_btn").click(function () {
+                    var question_id = $(this).attr("qct_id");
+                    var comment_content = $('#TextArea1').val();
+                    if (comment_content === '') { // 只能用 === 运算来测试某个值是否是未定义的
+                        alert("评论不能为空！！！！");
+                    } else {
+                         $.ajax({
+                            cache: false,
+                            url: "{% url 'show_idea:comment' %}",
+                            type: 'post',
+                            dataType: "json",
+                            data: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                                "question_id": question_id,
+                                "comment_content": comment_content,
+                                "reply_question_comment": $(this).attr("tid")
+                            },
+                            success: function (data) {
+                                var code = data['code'];
+                                if (code === 'comment_success') {
+                                    alert("评论回复-成功！！！");
+                                    $('#TextArea1').val('');
+                                    window.location.reload();
+                                } else {
+                                    alert("评论回复-失败，请稍候再试！！！");
+                                }
+                            }
+                        });
+                    }
+                })
+            });
+        </script>
+
+        <script type="text/javascript">
+        {#// 自定义翻页#}
+        $(document).ready(function () {
+            $(".page_btn").click(function () {
+                var page = $('.page_input').val();
+                if (page === ''|| !(/(^[1-9]\d*$)/.test(page))) { // 只能用 === 运算来测试某个值是否是未定义的
+                    alert("页数不能为空，只能输入正整数！！！");
+                } else {
+                    window.location.href="?page="+page;
                 }
             })
         });
+
     </script>
 {% endblock %}
 

@@ -63,6 +63,12 @@
             <div style="margin-top: 10px;">
                 <a href="{% url 'logout' %}" style="color: #cacfda"><span>注销</span></a>
                 <a href="{% url 'show_idea:pwd_change' %}" style="margin-left: 40px;color: #cacfda"><span>修改密码</span></a>
+
+            </div>
+            <div style="margin-top: 10px;">
+                {% if request.user.is_superuser %}
+                <a href="{% url 'show_idea:comment' %}" style="margin-left: 40px;color: #cacfda"><span>管理员审核评论</span></a>
+                {% endif %}
             </div>
 
         </header>

@@ -7,7 +7,9 @@ from django.views import View
 from django_redis import get_redis_connection
 from django.core.paginator import Paginator
 from show_idea.models import BigClassTheme, SubClassTheme, QuestionCalssTheme, QuestionComment
+from django.http import QueryDict
 from datetime import datetime
+import collections
 
 
 # 密码修改
@@ -37,28 +39,88 @@ class MyChangePwd(View):
 @method_decorator(login_required, name="dispatch")
 class CommentFunction(View):
     def get(self, request):
-        comment_qset = QuestionComment.objects.filter(is_show=2)
+        if not request.user.is_superuser:
+            return render(request, 'base_html/404.html')
+        comment_qset = QuestionComment.objects.filter(reply_question_comment=None).order_by('is_show').order_by(
+            '-create_timestamp')
+        comment_qset = sorted(comment_qset, key=lambda comment: comment.is_show)
+        # 获取二级评论
+        # all_comment_qset_dict = collections.OrderedDict()
+        all_comment_qset_dict = []
+        no_reply_comment_dict = collections.OrderedDict()
+        for comment_first in comment_qset:
+            comment_second = QuestionComment.objects.filter(reply_question_comment=comment_first)
+            if not len(comment_second):
+                no_reply_comment_dict[comment_first] = comment_second
+            else:
+                all_comment_qset_dict.append([comment_first, comment_second])
+
+        # 添加分页器
+        commentset_paginator = Paginator(all_comment_qset_dict, 10)
+        page = request.GET.get("page", 1)
+        commentset = commentset_paginator.get_page(page)  # django2.0版本新增功能 超出访问显示最后一页，字符串则显示第一页
+
         context = {
-            "comment_qset": comment_qset
+            "no_reply_comment_dict": no_reply_comment_dict,
+            "commentset": commentset
         }
         return render(request, 'new_showhtml/check_comment.html', context=context)
 
+    # 删除评论或者回复
+    def delete(self, request):
+        if not request.user.is_superuser:
+            return render(request, 'base_html/404.html')
+        DELETE = QueryDict(request.body)
+        comment_id = DELETE.get("comment_id")
+        if comment_id is not None:
+            comment_obj = QuestionComment.objects.get(t_id=int(comment_id))
+            if comment_obj.reply_question_comment is None:
+                QuestionComment.objects.filter(reply_question_comment=comment_obj).delete()
+            comment_obj.delete()
+            return JsonResponse({"code": "comment_success"})
+        else:
+            return JsonResponse({'code': "comment_fail"})
+
+    # 评论是否展示在文章详情
+    def put(self, request):
+        if not request.user.is_superuser:
+            return render(request, 'base_html/404.html')
+        update = QueryDict(request.body)
+        comment_id = update.get("comment_id")
+        is_show = update.get("is_show")
+        if all((comment_id, is_show)):
+            is_show = int(is_show)
+            QuestionComment.objects.filter(t_id=int(comment_id)).update(is_show=is_show)
+            return JsonResponse({"code": "comment_success"})
+        else:
+            return JsonResponse({'code': "comment_fail"})
+
+    # 回复评论或者发表评论
     def post(self, request, **kwargs):
         if request.method == "POST":
             user = request.user
+            if not user.is_superuser:
+                return render(request, 'base_html/404.html')
             data = request.POST
             question_id = data.get("question_id")
             comment_content = data.get("comment_content")
+            reply_question_comment = data.get("reply_question_comment")
+            que_comment = QuestionComment()
+            try:
+                que_obj = QuestionCalssTheme.objects.get(t_id=int(question_id))
+            except:
+                return render(request, 'base_html/404.html')
             if all((question_id, comment_content)):
-                que_comment = QuestionComment()
-                try:
-                    que_obj = QuestionCalssTheme.objects.get(t_id=int(question_id))
-                except:
-                    return render(request, 'base_html/404.html')
                 que_comment.user_obj = user
                 que_comment.question_obj = que_obj
                 que_comment.comment_content = comment_content
-                que_comment.is_show = 2   # 默认提交的评论都不显示， 管理员有权限审核并显示
+                que_comment.is_show = 2  # 默认提交的评论都不显示， 管理员有权限审核并显示
+                if reply_question_comment is not None:
+                    try:
+                        reply_que_obj = QuestionComment.objects.get(t_id=int(reply_question_comment))
+                    except:
+                        return JsonResponse({'code': "comment_fail", "msg": "查询不到回复的评论内容"})
+                    que_comment.reply_question_comment = reply_que_obj
                 que_comment.save()
                 return JsonResponse({"code": "comment_success"})
             else:
@@ -222,13 +284,19 @@ class QctObjectDetail(View):
         recent_visits = [(str(k, encoding='utf-8'), str(v, encoding='utf-8')) for k, v in recent_visits]
 
         # 获取文章评论
-        comment_qset = QuestionComment.objects.filter(is_show=1, question_obj=qct_obj_qury[0]).order_by('is_priority').order_by('-is_popular').order_by('-create_timestamp')
-
+        comment_qset = QuestionComment.objects.filter(is_show=1, question_obj=qct_obj_qury[0]).order_by(
+            'is_priority').order_by('-is_popular').order_by('-create_timestamp')
+        # 获取二级评论
+        all_comment_qset_dict = collections.OrderedDict()
+        for comment_first in comment_qset:
+            comment_second = QuestionComment.objects.filter(reply_question_comment=comment_first)
+            all_comment_qset_dict[comment_first] = comment_second
         context = {
             "btc_obj_qset": btc_obj_qset,
             "qct_obj": qct_obj_qury[0],
             "recent_visits": recent_visits,
             "comment_qset": comment_qset,
+            "all_comment_qset_dict": all_comment_qset_dict
         }
         resp = render(request, 'new_showhtml/q_detail_show.html', context=context)
         # 设置cookie，第一次颁发一个reading状态
