@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'haystack',            # haystack_whoosh 搜索引擎
     # 'show_idea.apps.ShowIdeaConfig',    # 应用app
     'show_idea',  # 应用app
+    'show_idea.templatetags',   # 注册自定义模板过滤器
     'celery_mytasks',
     'djcelery',  # 定时任务celery插件或开发异步框架
     'ckeditor',            # 富文本编辑器

@@ -39,7 +39,9 @@ class MyChangePwd(View):
 @method_decorator(login_required, name="dispatch")
 class CommentFunction(View):
     def get(self, request):
-        if not request.user.is_superuser:
+        # 判断是否 维护专员
+        is_Commissioner = request.user.groups.filter(name="维护专员").exists()
+        if not request.user.is_superuser and not is_Commissioner:
             return render(request, 'base_html/404.html')
         comment_qset = QuestionComment.objects.filter(reply_question_comment=None).order_by('is_show').order_by(
             '-create_timestamp')
@@ -68,7 +70,9 @@ class CommentFunction(View):
 
     # 删除评论或者回复
     def delete(self, request):
-        if not request.user.is_superuser:
+        # 判断是否 维护专员
+        is_Commissioner = request.user.groups.filter(name="维护专员").exists()
+        if not request.user.is_superuser and not is_Commissioner:
             return render(request, 'base_html/404.html')
         DELETE = QueryDict(request.body)
         comment_id = DELETE.get("comment_id")
@@ -83,7 +87,9 @@ class CommentFunction(View):
 
     # 评论是否展示在文章详情
     def put(self, request):
-        if not request.user.is_superuser:
+        # 判断是否 维护专员
+        is_Commissioner = request.user.groups.filter(name="维护专员").exists()
+        if not request.user.is_superuser and not is_Commissioner:
             return render(request, 'base_html/404.html')
         update = QueryDict(request.body)
         comment_id = update.get("comment_id")
@@ -97,34 +103,35 @@ class CommentFunction(View):
 
     # 回复评论或者发表评论
     def post(self, request, **kwargs):
-        if request.method == "POST":
-            user = request.user
-            if not user.is_superuser:
-                return render(request, 'base_html/404.html')
-            data = request.POST
-            question_id = data.get("question_id")
-            comment_content = data.get("comment_content")
-            reply_question_comment = data.get("reply_question_comment")
-            que_comment = QuestionComment()
-            try:
-                que_obj = QuestionCalssTheme.objects.get(t_id=int(question_id))
-            except:
-                return render(request, 'base_html/404.html')
-            if all((question_id, comment_content)):
-                que_comment.user_obj = user
-                que_comment.question_obj = que_obj
-                que_comment.comment_content = comment_content
-                que_comment.is_show = 2  # 默认提交的评论都不显示， 管理员有权限审核并显示
-                if reply_question_comment is not None:
-                    try:
-                        reply_que_obj = QuestionComment.objects.get(t_id=int(reply_question_comment))
-                    except:
-                        return JsonResponse({'code': "comment_fail", "msg": "查询不到回复的评论内容"})
-                    que_comment.reply_question_comment = reply_que_obj
-                que_comment.save()
-                return JsonResponse({"code": "comment_success"})
-            else:
-                return JsonResponse({'code': "comment_fail"})
+        user = request.user
+        # 判断是否 维护专员
+        is_Commissioner = user.groups.filter(name="维护专员").exists()
+        if not user.is_superuser and not is_Commissioner:
+            return render(request, 'base_html/404.html')
+        data = request.POST
+        question_id = data.get("question_id")
+        comment_content = data.get("comment_content")
+        reply_question_comment = data.get("reply_question_comment")
+        que_comment = QuestionComment()
+        try:
+            que_obj = QuestionCalssTheme.objects.get(t_id=int(question_id))
+        except:
+            return render(request, 'base_html/404.html')
+        if all((question_id, comment_content)):
+            que_comment.user_obj = user
+            que_comment.question_obj = que_obj
+            que_comment.comment_content = comment_content
+            que_comment.is_show = 2  # 默认提交的评论都不显示， 管理员有权限审核并显示
+            if reply_question_comment is not None:
+                try:
+                    reply_que_obj = QuestionComment.objects.get(t_id=int(reply_question_comment))
+                except:
+                    return JsonResponse({'code': "comment_fail", "msg": "查询不到回复的评论内容"})
+                que_comment.reply_question_comment = reply_que_obj
+            que_comment.save()
+            return JsonResponse({"code": "comment_success"})
+        else:
+            return JsonResponse({'code': "comment_fail"})
 
 
 # 搜索框自动补全
@@ -284,7 +291,8 @@ class QctObjectDetail(View):
         recent_visits = [(str(k, encoding='utf-8'), str(v, encoding='utf-8')) for k, v in recent_visits]
 
         # 获取文章评论
-        comment_qset = QuestionComment.objects.filter(is_show=1, question_obj=qct_obj_qury[0]).order_by('-create_timestamp')
+        comment_qset = QuestionComment.objects.filter(is_show=1, question_obj=qct_obj_qury[0]).order_by(
+            '-create_timestamp')
         comment_qset = sorted(comment_qset, key=lambda comment: comment.is_popular, reverse=True)
 
         # 获取二级评论

@@ -1,4 +1,5 @@
 {% load static %}
+{% load has_group %}
 
 <!doctype html>
 <html lang="en" style="height: 100%;">
@@ -66,9 +67,10 @@
 
             </div>
             <div style="margin-top: 10px;">
-                {% if request.user.is_superuser %}
+                {% if request.user.is_superuser or request.user|has_group:"维护专员"%}
                 <a href="{% url 'show_idea:comment' %}" style="margin-left: 40px;color: #cacfda"><span>管理员审核评论</span></a>
                 {% endif %}
+
             </div>
 
         </header>
