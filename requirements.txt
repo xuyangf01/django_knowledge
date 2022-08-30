@@ -8,7 +8,7 @@ djangorestframework==3.9.4
 drf-haystack==1.8.5
 idna==2.8
 jieba==0.39
-mod-wsgi==4.6.7+ap24vc14
+mod-wsgi==4.9.3
 PyMySQL==0.9.3
 python-dateutil==2.8.0
 pytz==2019.2
